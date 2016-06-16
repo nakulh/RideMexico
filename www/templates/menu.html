@@ -1,0 +1,40 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left">
+    <ion-header-bar class="bar-assertive">
+      <h1 class="title">Menu</h1>
+    </ion-header-bar>
+    <ion-content>
+      <ion-list class="MenuList">
+        <ion-item menu-close class="royal border-royal">
+          <i class="ion-ios-analytics"></i>
+          <span>Public Transport Database</span>
+        </ion-item>
+        <ion-item menu-close href="#/app/search" class="balanced border-balanced">
+          <i class="ion-android-search"></i>
+          <span>Search</span>
+        </ion-item>
+        <ion-item menu-close href="#/app/browse" class="energized border-energized">
+          <i class="ion-map"></i>
+          <span>Public Transport Map</span>
+        </ion-item>
+        <ion-item menu-close href="#/app/playlists" class="positive border-positive">
+          <i class="ion-android-car"></i>
+          <span>Personal Vehicle</span>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>

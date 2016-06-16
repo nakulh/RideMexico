@@ -1,0 +1,38 @@
+/* Empty. Add your own CSS if you like */
+i.ion-ios-analytics{
+  font-size: 20px;
+}
+i.ion-android-search{
+  font-size: 20px;
+  margin-right: 3px;
+}
+i.ion-map{
+  font-size: 20px;
+}
+i.ion-android-car{
+  font-size: 20px;
+  margin-right: 3px;
+}
+
+ion-item span{
+  font-size: 18px;
+}
+
+ion-content{
+  background: black;
+}
+/*
+.border-royal{
+  border-bottom: 2px solid #9272f6;
+  shadow
+}
+.border-energized{
+  border-bottom: 2px solid #ffc600;
+}
+.border-positive{
+  border-bottom: 2px solid #397ef6;
+}
+.border-balanced{
+  border-bottom: 2px solid #68bb77;
+}
+*/
