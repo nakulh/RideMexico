@@ -1,38 +1,40 @@
 /* Empty. Add your own CSS if you like */
-i.ion-ios-analytics{
-  font-size: 20px;
+.ion-ios-analytics{
+  font-size: 25px;
 }
-i.ion-android-search{
-  font-size: 20px;
+.ion-android-search{
+  font-size: 25px;
   margin-right: 3px;
 }
-i.ion-map{
-  font-size: 20px;
+.ion-map{
+  font-size: 25px;
 }
-i.ion-android-car{
-  font-size: 20px;
+.ion-android-car{
+  font-size: 25px;
   margin-right: 3px;
 }
 
-ion-item span{
-  font-size: 18px;
+/*.item-complex .item-content, .item .blackItem{
+    background-color: #454345 !important;
+    border: none;
+    font-size: 20px;*/
 }
-
-ion-content{
-  background: black;
-}
-/*
+/*.menuContent{
+    background-color: #454345;
+}*/
 .border-royal{
-  border-bottom: 2px solid #9272f6;
-  shadow
-}
-.border-energized{
-  border-bottom: 2px solid #ffc600;
-}
-.border-positive{
-  border-bottom: 2px solid #397ef6;
+  border-bottom: 2px solid #886aea;
 }
 .border-balanced{
-  border-bottom: 2px solid #68bb77;
+  border-bottom: 2px solid #33cd5f;
 }
-*/
+.border-energized{
+  border-bottom: 2px solid #ffc900;
+}
+.border-positive{
+  border-bottom: 2px solid #387ef5;
+}
+
+ng-map{
+  margin-top: 35px;
+}

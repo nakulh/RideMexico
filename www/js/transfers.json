@@ -1,0 +1,247 @@
+[
+  {
+    "from_stop_id": "STOP_14139",
+    "to_stop_id": "STOP_14157",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14162",
+    "to_stop_id": "STOP_14141",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14109",
+    "to_stop_id": "STOP_14058",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14155",
+    "to_stop_id": "STOP_14145",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14159",
+    "to_stop_id": "STOP_14155",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14159",
+    "to_stop_id": "STOP_14145",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14190",
+    "to_stop_id": "STOP_14187",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14169",
+    "to_stop_id": "STOP_14165",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14166",
+    "to_stop_id": "STOP_14164",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14168",
+    "to_stop_id": "STOP_14167",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14175",
+    "to_stop_id": "STOP_14144",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14103",
+    "to_stop_id": "STOP_14099",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14182",
+    "to_stop_id": "STOP_14051",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14226",
+    "to_stop_id": "STOP_14216",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14214",
+    "to_stop_id": "STOP_14226",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14214",
+    "to_stop_id": "STOP_14216",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14215",
+    "to_stop_id": "STOP_14214",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14215",
+    "to_stop_id": "STOP_14226",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14137",
+    "to_stop_id": "STOP_14161",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14178",
+    "to_stop_id": "STOP_14064",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14112",
+    "to_stop_id": "STOP_14108",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14062",
+    "to_stop_id": "STOP_14054",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14122",
+    "to_stop_id": "STOP_14062",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14122",
+    "to_stop_id": "STOP_14054",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14157",
+    "to_stop_id": "STOP_14139",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14141",
+    "to_stop_id": "STOP_14162",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14058",
+    "to_stop_id": "STOP_14109",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14145",
+    "to_stop_id": "STOP_14155",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14155",
+    "to_stop_id": "STOP_14159",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14145",
+    "to_stop_id": "STOP_14159",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14187",
+    "to_stop_id": "STOP_14190",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14165",
+    "to_stop_id": "STOP_14169",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14164",
+    "to_stop_id": "STOP_14166",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14167",
+    "to_stop_id": "STOP_14168",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14144",
+    "to_stop_id": "STOP_14175",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14099",
+    "to_stop_id": "STOP_14103",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14051",
+    "to_stop_id": "STOP_14182",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14216",
+    "to_stop_id": "STOP_14226",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14226",
+    "to_stop_id": "STOP_14214",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14216",
+    "to_stop_id": "STOP_14214",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14214",
+    "to_stop_id": "STOP_14215",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14226",
+    "to_stop_id": "STOP_14215",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14161",
+    "to_stop_id": "STOP_14137",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14064",
+    "to_stop_id": "STOP_14178",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14108",
+    "to_stop_id": "STOP_14112",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14054",
+    "to_stop_id": "STOP_14062",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14062",
+    "to_stop_id": "STOP_14122",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14054",
+    "to_stop_id": "STOP_14122",
+    "transfer_type": 0
+  },
+  {
+    "from_stop_id": "STOP_14066",
+    "to_stop_id": "STOP_42427",
+    "transfer_type": 0
+  }
+]

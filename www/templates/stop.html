@@ -1,0 +1,12 @@
+<ion-view>
+  <ion-nav-title>{{name}}</ion-nav-title>
+  <ion-content scroll="false">
+    <ng-map zoom="14" center={{pos}}>
+      <marker
+        icon="../img/me-marker.png"
+        position="{{pos}}">
+      </marker>
+    </ng-map>
+    <div class="bar bar-balanced"><h3 class="title">{{desc}}</h3></div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,130 @@
+<ion-view>
+  <ion-nav-title>Metro Route: {{route.route_short_name}}</ion-nav-title>
+  <ion-tabs class="tabs-positive tabs-icon-top">
+
+    <ion-tab title="Stations" icon-on="ion-ios-flag" icon-off="ion-ios-flag-outline">
+      <ion-content>
+        <ion-list>
+          <ion-item><h3>MetroRoute</h3></ion-item>
+          <ion-item>MetroRoute</ion-item>
+          <ion-item  class="item-divider">Stations List</ion-item>
+          <ion-item ng-repeat="stop in stops" class="item-icon-right" href="#/app/database/metroRoute/stop/{{stop.stop_lat}}/{{stop.stop_lon}}/{{stop.stop_name}}/{{stop.stop_desc}}">
+            {{stop.stop_name}}
+            <i class="icon ion-ios-arrow-right"></i>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-tab>
+
+    <ion-tab title="Timing" icon-on="ion-android-time" icon-off="ion-ios-clock-outline">
+      <ion-content class="padding-top">
+        <p>{{route.route_desc}}</p>
+        <ion-list>
+          <ion-item><h1>MetroRoute</h1></ion-item>
+
+          <ion-item class="item-divider">{{tripb[1].trip_desc}}</ion-item>
+          <ion-item class="item-divider">
+            <h2 class="positive">Monday to Friday</h2>
+          </ion-item>
+          <ion-item>
+            <div class="row">
+              <div class="col col-50">
+                <h3 class="assertive">Time<h3>
+              </div>
+              <div class="col col-50">
+                <h3 class="assertive">Frequency</h3>
+              </div>
+            </div>
+          </ion-item>
+          <ion-item>
+            <div class="row">
+              <div class="col col-50">
+                <p>{{frequenciesSeg1[0].start_time}} to {{frequenciesSeg1[0].end_time}}<p>
+              </div>
+              <div class="col col-50">
+                <p>{{frequenciesSeg1[0].headway_secs}}s</p>
+              </div>
+            </div>
+          </ion-item>
+          <ion-item>
+            <div class="row">
+              <div class="col col-50">
+                <p>{{frequenciesSeg1[1].start_time}} to {{frequenciesSeg1[1].end_time}}<p>
+              </div>
+              <div class="col col-50">
+                <p>{{frequenciesSeg1[1].headway_secs}}s</p>
+              </div>
+            </div>
+          </ion-item>
+          <ion-item>
+            <div class="row">
+              <div class="col col-50">
+                <p>{{frequenciesSeg1[2].start_time}} to {{frequenciesSeg1[2].end_time}}<p>
+              </div>
+              <div class="col col-50">
+                <p>{{frequenciesSeg1[2].headway_secs}}s</p>
+              </div>
+            </div>
+          </ion-item>
+          <ion-item class="item-divider">
+            <h2 class="positive">Saturday</h2>
+          </ion-item>
+          <ion-item>
+            <div class="row">
+              <div class="col col-50">
+                <h3 class="assertive">Time<h3>
+              </div>
+              <div class="col col-50">
+                <h3 class="assertive">Frequency</h3>
+              </div>
+            </div>
+          </ion-item>
+          <ion-item>
+            <div class="row">
+              <div class="col col-50">
+                <p>{{frequenciesSeg1[3].start_time}} to {{frequenciesSeg1[3].end_time}}<p>
+              </div>
+              <div class="col col-50">
+                <p>{{frequenciesSeg1[3].headway_secs}}s</p>
+              </div>
+            </div>
+          </ion-item>
+          <ion-item class="item-divider">
+            <h2 class="positive">Sunday</h2>
+          </ion-item>
+          <ion-item>
+            <div class="row">
+              <div class="col col-50">
+                <h3 class="assertive">Time<h3>
+              </div>
+              <div class="col col-50">
+                <h3 class="assertive">Frequency</h3>
+              </div>
+            </div>
+          </ion-item>
+          <ion-item>
+            <div class="row">
+              <div class="col col-50">
+                <p>{{frequenciesSeg1[4].start_time}} to {{frequenciesSeg1[4].end_time}}<p>
+              </div>
+              <div class="col col-50">
+                <p>{{frequenciesSeg1[4].headway_secs}}s</p>
+              </div>
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-tab>
+
+    <ion-tab title="Map" icon-on="ion-android-map" icon-off="ion-android-map">
+      <ng-map zoom="11" center={{shapeCenter}}>
+        <shape id="polyline" name="polyline"
+          geodesic="true" stroke-color="#FF0000"
+          stroke-opacity="1.0" stroke-weight="3"
+          path={{shapes}}>
+        </shape>
+      </ng-map>
+    </ion-tab>
+
+  </ion-tabs>
+</ion-view>
