@@ -18,7 +18,7 @@ app.factory('RoutesService', function($http, $q){
 });
 
 //gets 1 metro route details
-app.factory('MetroRouteService', function($http, $q){
+app.factory('MetroTrainRouteService', function($http, $q){
   var self = {};
   self.getRouteDetails = function(routeId){
     self.route = {};

@@ -1,7 +1,7 @@
 <ion-view view-title="Routes List">
   <ion-content>
     <ion-list>
-      <ion-item href="#/app/database/metroRoute/{{route.route_id}}" ng-repeat="route in busRoutes">
+      <ion-item href="#/app/database/{{routeType}}/{{route.route_id}}" ng-repeat="route in busRoutes">
         <h2>{{route.route_long_name}}</h2>
         <h6 class="assertive">Route: {{route.route_short_name}}</h6>
         <p>{{route.route_desc}}</p>

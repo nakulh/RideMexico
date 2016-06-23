@@ -1,0 +1,88 @@
+<ion-view view-title="Public Transport Database">
+  <ion-content>
+    <div class="list card" ng-controller="DatabaseMenuCtrl">
+
+      <a href="#" class="item item-icon-left item-icon-right" ng-click="busToggle()" ng-class="{'positive': bus}">
+        <i class="icon ion-android-bus"></i>
+        Bus
+        <i class="icon" ng-class="{'ion-chevron-down': !bus,
+                                   'ion-chevron-up': bus}"></i>
+      </a>
+      <div ng-if="bus">
+        <div class="button-bar">
+          <a class="button"><i class="ion-android-hand padding-right"></i>Stops map</a>
+          <a class="button"><i class="ion-android-map padding-right"></i>Routes map</a>
+        </div>
+        <div class="button-bar bus-button-bar">
+          <a class="button"><i class="ion-clock padding-right"></i>Timing</a>
+          <a class="button" href="#/app/database/busRoute"><i class="ion-network padding-right"></i>Routes info</a>
+        </div>
+      </div>
+      <a href="#" class="item item-icon-left item-icon-right" ng-click="trainToggle()"  ng-class="{'positive': train}">
+        <i class="icon ion-android-train"></i>
+        Train
+        <i class="icon" ng-class="{'ion-chevron-down': !train,
+                                   'ion-chevron-up': train}"></i>
+      </a>
+      <div ng-if="train">
+        <div class="button-bar">
+          <a class="button"><i class="ion-android-hand padding-right"></i>Stops map</a>
+          <a class="button"><i class="ion-android-map padding-right"></i>Routes map</a>
+        </div>
+        <div class="button-bar bus-button-bar">
+          <a class="button"><i class="ion-clock padding-right"></i>Timing</a>
+          <a class="button" href="#/app/database/trainRoute"><i class="ion-network padding-right"></i>Routes info</a>
+        </div>
+      </div>
+
+      <a href="#" class="item item-icon-left item-icon-right" ng-click="metroToggle()"  ng-class="{'positive': metro}">
+        <i class="icon ion-android-subway"></i>
+        Metro
+        <i class="icon" ng-class="{'ion-chevron-down': !metro,
+                                   'ion-chevron-up': metro}"></i>
+      </a>
+      <div ng-if="metro">
+        <div class="button-bar">
+          <a class="button"><i class="ion-android-hand padding-right"></i>Stops map</a>
+          <a class="button"><i class="ion-android-map padding-right"></i>Routes map</a>
+        </div>
+        <div class="button-bar bus-button-bar">
+          <a class="button"><i class="ion-clock padding-right"></i>Timing</a>
+          <a class="button" href="#/app/database/metroRoute"><i class="ion-network padding-right"></i>Routes info</a>
+        </div>
+      </div>
+
+      <a href="#" class="item item-icon-left item-icon-right" ng-click="ecobikeToggle()" ng-class="{'positive': ecobike}">
+        <i class="icon ion-android-bicycle"></i>
+        Eco-Bike Stands
+        <i class="icon" ng-class="{'ion-chevron-down': !ecobike,
+                                   'ion-chevron-up': ecobike}"></i>
+      </a>
+      <div class="button-bar" ng-if="ecobike">
+        <a class="button"><i class="ion-android-map padding-right"></i>Bike Stands Map</a>
+      </div>
+
+
+      <a href="#" class="item item-icon-left item-icon-right" ng-click="carrotToggle()" ng-class="{'positive': carrot}">
+        <i class="icon ion-android-car"></i>
+        Carrot Car rental
+        <i class="icon" ng-class="{'ion-chevron-down': !carrot,
+                                   'ion-chevron-up': carrot}"></i>
+      </a>
+      <div class="button-bar" ng-if="carrot">
+        <a class="button"><i class="ion-android-map padding-right"></i>Carrot Stands Map</a>
+      </div>
+
+
+      <a href="#" class="item item-icon-left item-icon-right" ng-click="unknownToggle()" ng-class="{'positive': unknown}">
+        <i class="icon ion-help"></i>
+        unknown
+        <i class="icon" ng-class="{'ion-chevron-down': !unknown,
+                                   'ion-chevron-up': unknown}"></i>
+      </a>
+      <div class="button-bar" ng-if="unknown">
+        <a class="button"><i class="ion-information padding-right"></i>See info</a>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

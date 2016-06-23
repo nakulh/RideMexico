@@ -117,8 +117,26 @@ var app = angular.module('RideMexico',
       }
     }
   })
-  .state('app.stopMap', {
+  .state('app.trainRoute', {
+    url: '/database/trainRoute/:routeId',
+    views: {
+      'menuContent':{
+    templateUrl: 'templates/trainRoute.html',
+    controller: 'TrainRouteController'
+      }
+    }
+  })
+  .state('app.MetroStopMap', {
     url: '/database/metroRoute/stop/:lat/:lon/:name/:desc',
+    views: {
+      'menuContent':{
+        templateUrl: 'templates/stop.html',
+        controller: 'StopMapController'
+      }
+    }
+  })
+  .state('app.TrainStopMap', {
+    url: '/database/trainRoute/stop/:lat/:lon/:name/:desc',
     views: {
       'menuContent':{
         templateUrl: 'templates/stop.html',

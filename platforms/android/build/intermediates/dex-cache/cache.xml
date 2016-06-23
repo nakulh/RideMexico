@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="P:\RideMexico\platforms\android\libs\sqlite-connector.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="76169ab23a4f939925491c6fe186749da5a56ee9">
+        <dex dex="P:\RideMexico\platforms\android\build\intermediates\pre-dexed\debug\sqlite-connector_9593c9f01edf4ca681d6615095749a699c12f36b.jar" />
+    </item>
+    <item
+        jar="P:\RideMexico\platforms\android\build\intermediates\exploded-aar\android\CordovaLib\unspecified\debug\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="5fb481347c22223d4ba7803181dca0444545e342">
+        <dex dex="P:\RideMexico\platforms\android\build\intermediates\pre-dexed\debug\CordovaLib-unspecified-debug_9fd92564fdf0956dacd0458555a3aab04b907b84.jar" />
+    </item>
+
+</items>

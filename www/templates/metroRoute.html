@@ -22,7 +22,10 @@
         <ion-list>
           <ion-item><h1>MetroRoute</h1></ion-item>
 
-          <ion-item class="item-divider">{{tripb[1].trip_desc}}</ion-item>
+          <ion-item class="item-divider">
+              <h2>{{tripb[1].trip_desc}}</h2>
+              <h5 class="assertive">Total route time: {{routeTime}}</h5>
+          </ion-item>
           <ion-item class="item-divider">
             <h2 class="positive">Monday to Friday</h2>
           </ion-item>
@@ -123,6 +126,7 @@
           stroke-opacity="1.0" stroke-weight="3"
           path={{shapes}}>
         </shape>
+        <marker position="{{stopMap}}" ng-repeat="stopMap in stopsMap" icon="../img/trainMarker.png"></marker>
       </ng-map>
     </ion-tab>
 
