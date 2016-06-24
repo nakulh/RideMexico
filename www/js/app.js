@@ -143,6 +143,24 @@ var app = angular.module('RideMexico',
         controller: 'StopMapController'
       }
     }
+  })
+  .state('app.BusTripList', {
+    url: '/database/busRoute/:routeId',
+    views: {
+      'menuContent':{
+        templateUrl: 'templates/busTripList.html',
+        controller: 'BusTripController'
+      }
+    }
+  })
+  .state('app.BusTripRoute', {
+    url: '/database/busRoute/:routeId/:tripId',
+    views: {
+      'menuContent':{
+        templateUrl: 'templates/busTripRoute.html',
+        controller: 'BusTripRouteController'
+      }
+    }
   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/database');
