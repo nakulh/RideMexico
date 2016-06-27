@@ -35,14 +35,19 @@
   border-bottom: 2px solid #387ef5;
 }
 
-ng-map{
-  margin-top: 35px;
-}
-
 .text-center{
   text-align: center;
 }
 
-.margin-right{
-  margin-right: 4px !important;
+.map-but{
+  position: absolute;
+  top: 85vh;
+  left: 33%;
+}
+.map-pointer{
+  position: absolute;
+  top: 43vh;
+  left:50%;
+  margin-left: -16px;
+  margin-top: -32px;
 }

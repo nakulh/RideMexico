@@ -1,5 +1,71 @@
-<ion-view view-title="Browse">
-  <ion-content>
-    <h1>Map</h1>
-  </ion-content>
+<ion-view>
+
+<ion-nav-title>Dyanmic Map</ion-nav-title>
+<ion-tabs class="tabs-positive tabs-icon-top tabs-top tabs-striped">
+  <button class="button button-balanced map-but">
+    hi
+  </button>
+  <img src="../img/dyMap.png" class="map-pointer">
+    <ion-tab title="Map" icon-on="ion-android-map" icon-off="ion-android-map">
+      <map default-style="false" class="h-fix" zoom="10"  center="[28.6139, 77.2090]">
+      </map>
+    </ion-tab>
+
+
+    <ion-tab title="Settings" icon-on="ion-ios-gear-outline" icon-off="ion-ios-gear">
+      <ion-content>
+        <h1>hi</h1>
+        <h3>f</h3>
+        <ul class="list">
+          <div class="item item-divider">
+            Set Paths To Show
+          </div>
+          <li class="item item-toggle">
+             Bus
+             <label class="toggle toggle-balanced">
+               <input type="checkbox">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+          <li class="item item-toggle">
+             Train
+             <label class="toggle toggle-balanced">
+               <input type="checkbox">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+          <li class="item item-toggle">
+             Metro
+             <label class="toggle toggle-balanced">
+               <input type="checkbox">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+          <li class="item item-toggle">
+             Carrot stations
+             <label class="toggle toggle-balanced">
+               <input type="checkbox">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+          <div class="item item-divider">
+            Set Range
+          </div>
+          <div class="item range range-positive">
+            <i>50m</i>
+            <input type="range" name="range" min="50" max="3000" value="33">
+            <i>3000m</i>
+          </div>
+        </ul>
+      </ion-content>
+    </ion-tab>
+  </ion-tabs>
 </ion-view>

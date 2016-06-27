@@ -1,5 +1,77 @@
-<ion-view view-title="Browse">
-  <ion-content>
-    <h1>Map</h1>
-  </ion-content>
+<ion-view>
+
+<ion-nav-title>Dyanmic Map</ion-nav-title>
+<ion-tabs class="tabs-positive tabs-icon-top tabs-top tabs-striped">
+  <button ng-if="status" class="button button-balanced map-but" ng-click="selectLocation()">
+    Select Location
+  </button>
+  <img src="../img/dyMap.png" class="map-pointer" ng-if="status">
+    <ion-tab title="Map" icon-on="ion-android-map" icon-off="ion-android-map"  on-select="shower()" on-deselect="hider()">
+      <ng-map zoom="14"  center="[19.669948192592543, -99.17607307434082]">
+        <marker position="19.669948192592543,-99.17607307434082"></marker>
+        <shape ng-if="shapes.length > 0" ng-repeat="shape in shapes" id="polyline" name="polyline"
+          geodesic="true" stroke-color={{colours[$index]}}
+          stroke-opacity="1.0" stroke-weight="3"
+          path={{shape}}>
+        </shape>
+      </ng-map>
+    </ion-tab>
+
+
+    <ion-tab title="Settings" icon-on="ion-ios-gear-outline" icon-off="ion-ios-gear">
+      <ion-content>
+        <h1>hi</h1>
+        <h3>f</h3>
+        <ul class="list">
+          <div class="item item-divider">
+            Set Paths To Show
+          </div>
+          <li class="item item-toggle">
+             Bus
+             <label class="toggle toggle-balanced">
+               <input type="checkbox">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+          <li class="item item-toggle">
+             Train
+             <label class="toggle toggle-balanced">
+               <input type="checkbox">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+          <li class="item item-toggle">
+             Metro
+             <label class="toggle toggle-balanced">
+               <input type="checkbox">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+          <li class="item item-toggle">
+             Carrot stations
+             <label class="toggle toggle-balanced">
+               <input type="checkbox">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+          </li>
+          <div class="item item-divider">
+            Set Range
+          </div>
+          <div class="item range range-positive">
+            <i>50m</i>
+            <input type="range" name="range" min="50" max="3000" value="33">
+            <i>3000m</i>
+          </div>
+        </ul>
+      </ion-content>
+    </ion-tab>
+  </ion-tabs>
 </ion-view>

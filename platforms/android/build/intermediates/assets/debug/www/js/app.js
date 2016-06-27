@@ -9,9 +9,9 @@ var app = angular.module('RideMexico',
    'starter.controllers',
    'ngCordova',
    'Database.controllers',
-
-   //'Map.controllers',
-  // 'Search.controllers',
+   'ngMap',
+   'Map.controllers'
+   //'Search.controllers',
    //'Personal.controllers'
   ])
 
@@ -74,7 +74,7 @@ var app = angular.module('RideMexico',
     views: {
       'menuContent': {
         templateUrl: 'templates/map.html',
-      //  controller: 'PlaylistCtrl'
+        controller: 'MapController'
       }
     }
   })
@@ -105,6 +105,60 @@ var app = angular.module('RideMexico',
       'menuContent':{
         templateUrl: 'templates/routes.html',
         controller: 'MetroRoutesListController'
+      }
+    }
+  })
+  .state('app.metroRoute', {
+    url: '/database/metroRoute/:routeId',
+    views: {
+      'menuContent':{
+    templateUrl: 'templates/metroRoute.html',
+    controller: 'MetroRouteController'
+      }
+    }
+  })
+  .state('app.trainRoute', {
+    url: '/database/trainRoute/:routeId',
+    views: {
+      'menuContent':{
+    templateUrl: 'templates/trainRoute.html',
+    controller: 'TrainRouteController'
+      }
+    }
+  })
+  .state('app.MetroStopMap', {
+    url: '/database/metroRoute/stop/:lat/:lon/:name/:desc',
+    views: {
+      'menuContent':{
+        templateUrl: 'templates/stop.html',
+        controller: 'StopMapController'
+      }
+    }
+  })
+  .state('app.TrainStopMap', {
+    url: '/database/trainRoute/stop/:lat/:lon/:name/:desc',
+    views: {
+      'menuContent':{
+        templateUrl: 'templates/stop.html',
+        controller: 'StopMapController'
+      }
+    }
+  })
+  .state('app.BusTripList', {
+    url: '/database/busRoute/:routeId',
+    views: {
+      'menuContent':{
+        templateUrl: 'templates/busTripList.html',
+        controller: 'BusTripController'
+      }
+    }
+  })
+  .state('app.BusTripRoute', {
+    url: '/database/busRoute/:routeId/:tripId',
+    views: {
+      'menuContent':{
+        templateUrl: 'templates/busTripRoute.html',
+        controller: 'BusTripRouteController'
       }
     }
   });

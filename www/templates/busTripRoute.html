@@ -8,7 +8,7 @@
           <ion-item><h3>BusRoute</h3></ion-item>
           <ion-item>BusRoute</ion-item>
           <ion-item  class="item-divider">Stations List</ion-item>
-          <ion-item ng-repeat="stop in stops" class="item-icon-right" href="#/app/database/metroRoute/stop/{{stop.stop_lat}}/{{stop.stop_lon}}/{{stop.stop_name}}/{{stop.stop_desc}}">
+          <ion-item ng-repeat="stop in stops track by $index" class="item-icon-right" href="#/app/database/metroRoute/stop/{{stop.stop_lat}}/{{stop.stop_lon}}/{{stop.stop_name}}/{{stop.stop_desc}}">
             {{stop.stop_name}}
             <i class="icon ion-ios-arrow-right"></i>
           </ion-item>
@@ -63,7 +63,7 @@
           stroke-opacity="1.0" stroke-weight="3"
           path={{shapes}}>
         </shape>
-        <marker position="{{stopMap}}" ng-repeat="stopMap in stopsMap" icon="../img/busMarker.png"></marker>
+       <marker position="{{stopMap}}" ng-repeat="stopMap in stopsMap track by $index" icon="../img/busMarker.png"></marker>
       </ng-map>
     </ion-tab>
 

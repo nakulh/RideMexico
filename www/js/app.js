@@ -9,9 +9,9 @@ var app = angular.module('RideMexico',
    'starter.controllers',
    'ngCordova',
    'Database.controllers',
-   'ngMap'
-   //'Map.controllers',
-  // 'Search.controllers',
+   'ngMap',
+   'Map.controllers'
+   //'Search.controllers',
    //'Personal.controllers'
   ])
 
@@ -74,7 +74,7 @@ var app = angular.module('RideMexico',
     views: {
       'menuContent': {
         templateUrl: 'templates/map.html',
-      //  controller: 'PlaylistCtrl'
+        controller: 'MapController'
       }
     }
   })
