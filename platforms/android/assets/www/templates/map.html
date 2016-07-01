@@ -2,13 +2,25 @@
 
 <ion-nav-title>Dyanmic Map</ion-nav-title>
 <ion-tabs class="tabs-positive tabs-icon-top tabs-top tabs-striped">
-  <button class="button button-balanced map-but">
-    hi
-  </button>
-  <img src="../img/dyMap.png" class="map-pointer">
-    <ion-tab title="Map" icon-on="ion-android-map" icon-off="ion-android-map">
-      <map default-style="false" class="h-fix" zoom="10"  center="[28.6139, 77.2090]">
-      </map>
+  <ul class="map-ul" ng-if="status" ng-class="{'map-but': !gotNewAddress, 'map-add-bar button button-stable animate-map-ul': gotNewAddress}">
+    <li ng-if="!gotNewAddress" class="map-li map-but-select"><a style="color: black" ng-click="selectLocation()">Select Location</a></li>
+    <li ng-if="!gotNewAddress" class="map-li map-but-clear"><a style="color: black" ng-click="clearMap()">Clear Map</a></li>
+    <li ng-if="gotNewAddress" class="map-li map-add-li"><a class="map-add" style="color: black">{{address}}</a></li>
+  </ul>
+  <img src="../img/{{img}}" class="map-pointer" ng-if="status" ng-class="{'animate-marker': markerAnimation}">
+    <ion-tab title="Map" icon-on="ion-android-map" icon-off="ion-android-map"  on-select="shower()" on-deselect="hider()">
+      <ng-map zoom="14" center="[19.669948192592543, -99.17607307434082]">
+        <shape ng-if="shapes.length > 0" ng-repeat="shape in shapes track by $index" id="polyline" name="polyline"
+          geodesic="true" stroke-color={{colours[$index]}}
+          stroke-opacity="1.0" stroke-weight="3"
+          path={{shape}}>
+        </shape>
+        <marker ng-repeat="greenMarker in greenMarkers track by $index" position={{greenMarker}} icon="http://maps.google.com/mapfiles/ms/icons/green-dot.png"></marker>
+        <shape ng-repeat="circle in circles track by $index" id="circle" name="circle"
+          stroke-color='#f2f2f2' stroke-opacity="0.4" stroke-weight="2"
+          center={{circle.center}} radius={{circle.radius}}>
+        </shape>
+      </ng-map>
     </ion-tab>
 
 

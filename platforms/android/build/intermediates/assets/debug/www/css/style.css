@@ -39,18 +39,81 @@
   text-align: center;
 }
 
-ng-map{
-  margin-top: 90px;
-}
 .map-but{
-  position: absolute;
-  margin-top: 85vh;
-  margin-left:35vh;
+  position: absolute !important;
+  top: 9vh;
+  left: 50%;
+  margin-left: -99px;
+
 }
+.map-add-bar{
+  position: absolute !important;
+  top: 9vh;
+}
+.map-li{
+  float: left !important;
+}
+.map-ul{
+  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 1px solid #363131;
+  border-radius: 2px;
+  -webkit-box-shadow: 2px 1px 9px -1px rgba(138,138,138,0.79);
+  -moz-box-shadow: 2px 1px 9px -1px rgba(138,138,138,0.79);
+  box-shadow: 2px 1px 9px -1px rgba(138,138,138,0.79);
+}
+.animate-map-ul{
+  animation: example 0.5s;
+  width: 90vw;
+  left: 5%;
+  margin-left: 0px;
+}
+@keyframes example {
+    0% {width 192px; left: 50%; margin-left: -99px; margin-top: -400px;}
+    100%  {width: 90vw; left: 5%; margin-left: 0px; margin-top: 0px;}
+}
+
+.map-but-select{
+  margin-left: 10px;
+  border-right: 1px solid #363131;
+  padding-right: 5px;
+  color: black
+}
+.map-but-clear{
+  margin-left: 7px;
+  margin-right: 7px;
+}
+.ion-compass{
+   color: black;
+   font-size:25px;
+   padding-right: 5px !important;
+   margin-top: 100px !important;
+   border-right: 1px solid #363131;
+}
+.map-add{
+  margin-left: 5px;
+}
+
 .map-pointer{
   position: absolute;
-  top: 50vh;
+  top: 43vh;
   left:50%;
   margin-left: -16px;
   margin-top: -32px;
+}
+.animate-marker{
+  transform: rotate(25deg);
+  -ms-transform: rotate(25deg); /* IE 9 */
+  -webkit-transform: rotate(25deg); /* Chrome, Safari, Opera */
+  -webkit-animation: mymove 1s infinite; /* Chrome, Safari, Opera */
+  animation: mymove 1s infinite;
+}
+@-webkit-keyframes mymove {
+    50% {transform: rotate(-25deg);}
+}
+
+/* Standard syntax */
+@keyframes mymove {
+    50% {transform: rotate(-25deg);}
 }

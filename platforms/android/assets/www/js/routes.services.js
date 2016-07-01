@@ -172,7 +172,7 @@ app.factory('BusTripRouteService', function($http, $q){
                   for(y = 0; y < stops.length; y++)
                     if(self.stopTimes[x].stop_id.trim() == stops[y].stop_id.trim())
                       self.stops.push(stops[y]);
-                d.resolve();
+                d.resolve(true);
               })
               .error(function error(err){
                 console.log(err);

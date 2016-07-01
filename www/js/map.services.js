@@ -11,16 +11,21 @@ app.factory('MapService', function($http, $q){
 
     return 12742 * Math.asin(Math.sqrt(a)) * 1000; // 2 * R; R = 6371 km
   };
-  self.getRoutes = function(lat, lon, dist){
+  self.getRoutes = function(lat, lon, dist, bus, train, metro){
     d = $q.defer();
     self.stopIds = [];
     self.tripIds =  [];
     self.tripIdsC = [];
+    self.tripIdsD = [];
     self.trips  = [];
     self.stopTimes = [];
     self.stops = [];
     self.shapes = [];
+    self.routes = [];
+    self.tripsNoRepeat = [];
+    self.tripType = [];
     $http.get("./js/stops.json")
+    //select stops within range
       .success(function (stops){
         angular.forEach(stops, function(stop, index){
           var currDist = self.distance(lat, lon, stop.stop_lat, stop.stop_lon);
@@ -32,7 +37,8 @@ app.factory('MapService', function($http, $q){
           d.resolve(false);
           return d.promise;
         }
-        console.log(self.stopIds);
+        //console.log(self.stopIds);
+        //get matching tripId in stop__times.json from stop ids
         $http.get("./js/stop_times.json")
           .success(function(stopTimes){
             angular.forEach(stopTimes, function(stopTime, index){
@@ -40,7 +46,8 @@ app.factory('MapService', function($http, $q){
                 if(self.stopIds[x].trim() == stopTime.stop_id.trim())
                   self.tripIds.push(stopTime.trip_id);
             });
-            console.log(self.tripIds);
+            //remove duplicate tripIds by comparing trip_desc in trips.json
+          //console.log(self.tripIds);
             $http.get('./js/trips.json')
               .success(function(trips){
                 var selTrips = {};
@@ -61,34 +68,59 @@ app.factory('MapService', function($http, $q){
                   if(!there){
                     self.tripIdsC.push(self.tripIds[x]);
                     self.trips.push(selTrips[self.tripIds[x]]);
-                    console.log(self.tripIds[x]);
+                    //console.log(self.tripIds[x]);
                   }
                 }
-                console.log(self.tripIdsC.length);
-                for(x = 0; x < self.tripIdsC.length; x++){
-                  self.stopTimes.push([]);
-                  for(y = 0; y < stopTimes.length; y++)
-                    if(self.tripIdsC == stopTimes[y].trip_id)
-                      self.stopTimes[x].push(stopTimes[y]);
-                }
-                for(x = 0; x < self.stopTimes.length; x++){
-                  self.stops.push([]);
-                  for(y = 0; y < self.stopTimes[x].length; y++)
-                    for(z = 0; z < stops.length; z++)
-                      if(stops[z].stop_id.trim() == self.stopTimes[x][y].stop_id)
-                        self.stops[x].push(stops[z]);
-                }
-                $http.get("./js/shapes.json")
-                  .success(function success(shapes){
-                    for(x = 0; x < self.trips.length; x++){
-                      self.shapes.push([]);
-                      for(y = 0; y < shapes.length; y++)
-                        if(shapes[y].shape_id == self.trips[x].shape_id)
-                          self.shapes[x].push(shapes[y]);
-                    }
-                    d.resolve(true);
+                $http.get('./js/routes.json')
+                  .success(function(routes){
+                    var selRoutes = {};
+                    for(x = 0; x < self.trips.length; x++)
+                      for(y = 0; y < routes.length; y++)
+                        if(routes[y].route_id.trim() == self.trips[x].route_id){
+                          if(routes[y].route_type == "1" && metro || routes[y].route_type == "2" && train || routes[y].route_type == "3" && bus || routes[y].route_type == "800"){
+                            var id  = routes[y].route_id;
+                            if(!selRoutes[id]){
+                              self.tripIdsD.push(self.trips[x].trip_id);
+                              self.routes.push(routes[y]);
+                              self.tripsNoRepeat.push(self.trips[x]);
+                              self.tripType.push(routes[x].route_type);
+                              selRoutes[id] = true;
+                            }
+                          }
+                        }
+                        //console.log(self.tripIdsD.length);
+                        //get corresponding stop_times for getting stops
+
+                        for(x = 0; x < self.tripIdsD.length; x++){
+                          self.stopTimes.push([]);
+                          for(y = 0; y < stopTimes.length; y++)
+                            if(self.tripIdsD[x] == stopTimes[y].trip_id)
+                              self.stopTimes[x].push(stopTimes[y]);
+                        }
+                        //now get the stops
+                        for(x = 0; x < self.stopTimes.length; x++){
+                          self.stops.push([]);
+                          for(y = 0; y < self.stopTimes[x].length; y++)
+                            for(z = 0; z < stops.length; z++)
+                              if(stops[z].stop_id.trim() == self.stopTimes[x][y].stop_id)
+                                self.stops[x].push(stops[z]);
+                        }
+                        //get paths from trips objects
+                        $http.get("./js/shapes.json")
+                          .success(function success(shapes){
+                            for(x = 0; x < self.tripsNoRepeat.length; x++){
+                              self.shapes.push([]);
+                              for(y = 0; y < shapes.length; y++)
+                                if(shapes[y].shape_id == self.tripsNoRepeat[x].shape_id)
+                                  self.shapes[x].push(shapes[y]);
+                            }
+                            d.resolve(true);
+                          })
+                          .error(function error(err){
+                            console.log(err);
+                          });
                   })
-                  .error(function error(err){
+                  .error(function(err){
                     console.log(err);
                   });
               })

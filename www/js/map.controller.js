@@ -1,47 +1,126 @@
 var app = angular.module('Map.controllers', ['Map.services']);
-app.controller('MapController', function($scope, MapService, NgMap, $ionicTabsDelegate){
+app.controller('MapController', function($scope, MapService, NgMap, $ionicTabsDelegate, $cordovaToast, $http){
   NgMap.getMap().then(function(map) {
+    $scope.dist = 100;
+    $scope.Dist = $scope.dist;
     $scope.shapes = [];
     $scope.markers = [];
-    $scope.colours = ["#ff0000", "#66ff33", "#996633", "#cc00ff", "#660066", "#999966", "#ff6699",
-                       "#003366", "#3366cc", "#660033", "#0099cc", "#669999", "#00ccff", "#666699",
-                       "#00ffff", "#6600ff", "#66ffff", "#339933", "#ccffff", "#ffffcc", "#669900",
-                       "#993333", "#ff0000", "#66ff33", "#996633", "#cc00ff", "#660066", "#999966",
-                       "#ff6699", "#003366","#3366cc", "#660033", "#0099cc", "#669999", "#00ccff",
-                       "#666699", "#00ffff", "#6600ff", "#66ffff", "#339933", "#ccffff", "#ffffcc",
-                       "#669900", "#993333", "#ff0000", "#66ff33", "#996633", "#cc00ff", "#660066",
-                       "#999966", "#ff6699", "#003366","#3366cc", "#660033", "#0099cc", "#669999",
-                       "#00ccff", "#666699", "#00ffff", "#6600ff", "#66ffff", "#339933", "#ccffff",
-                       "#ffffcc", "#669900", "#993333"];
-    console.log(map.getCenter().toUrlValue());
-  //  console.log('markers', map.markers);
-  //  console.log('shapes', map.shapes);
-
+    $scope.circles = [];
+    $scope.tripType = [];
+    $scope.address = "";
+    $scope.markerAnimation = false;
+    $scope.gotNewAddress = false;
+    $scope.img = "dyMap.png";
+    $scope.bus = true;
+    $scope.train = true;
+    $scope.metro = true;
+    $scope.crtstn = false;
+    $scope.colours = ["#207371", "#875560", "#cd582f", "#f91f5f", "#496095", "#3be701", "#021240",
+                       "#9a950e", "#98e388", "#ff0000", "#e8afc4"];
+    var tripTypeDir = {
+      "1": "metro",
+      "2": "train",
+      "3": "bus"
+    };
+    var shuffleColours = function shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        return array;
+    };
+    $scope.distSet = function(x){
+      $scope.dist = x;
+    };
+    $scope.busChange = function(){
+      $scope.bus = !$scope.bus;
+    };
+    $scope.trainChange = function(){
+      $scope.train = !$scope.train;
+    };
+    $scope.metroChange = function(){
+      $scope.metro = !$scope.metro;
+    };
+    $scope.crtstnChange = function(){
+      $scope.crtstn = !$scope.crtstn;
+    };
+    google.maps.event.addListener(map, 'center_changed', function() {
+      $scope.img = "dyMap.png";
+      $scope.gotNewAddress = false;
+      $scope.$apply();
+    });
+    $scope.clearMap = function(){
+      $scope.shapes = [];
+      $scope.markers = [];
+      $scope.circles = [];
+      $scope.address = "";
+      $scope.markerAnimation = false;
+      $scope.img = "dyMap.png";
+      $scope.gotNewAddress = false;
+    };
     $scope.selectLocation = function(){
+      $scope.img = "dyMapBusy.png";
+      $scope.markerAnimation = true;
       latLon = map.getCenter().toUrlValue();
-      console.log(latLon);
       lat = latLon.slice(0,latLon.indexOf(","));
       lon = latLon.slice(latLon.indexOf(",")+1, latLon.length);
-      console.log(lat);
-      console.log(lon);
-      dist = 400;
-      MapService.getRoutes(lat, lon, dist).then(function(data){
+      $http.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&key=AIzaSyDtZm_v8XKJd4VOqMdonzpM02t0zweJS3E")
+        .success(function(geoData){
+          if(geoData.results[1].formatted_address.length > 34)
+            $scope.address = geoData.results[1].formatted_address.slice(0, 34) + "..";
+          else {
+            $scope.address = geoData.results[1].formatted_address;
+          }
+          $scope.gotNewAddress = true;
+        })
+        .error(function(err){
+          console.log(err);
+        });
+      MapService.getRoutes(lat, lon, $scope.dist, $scope.bus, $scope.train, $scope.metro).then(function(data){
         if(!data){
-          console.log("no stops found");
+          /*$cordovaToast
+            .show('No stops nearby', 'long', 'center')
+            .then(function(success) {
+            }, function (error) {
+            });*/
+          $scope.markerAnimation = false;
         }
         else{
-          $scope.shapes = [];
-          $scope.markers = [];
-          for(x = 0; x < MapService.shapes.length; x++){
+          var start = $scope.shapes.length;
+          $scope.colours = shuffleColours($scope.colours);
+          for(x = start; x < MapService.shapes.length + start; x++){
             $scope.shapes.push("");
-            for(y = 0; y < MapService.shapes[x].length; y++){
-              $scope.shapes[x] += "[" + MapService.shapes[x][y].shape_pt_lat + "," + MapService.shapes[x][y].shape_pt_lon + "],";
+            //var secondStart = start > 0 ? x-start:x;
+            for(y = 0; y < MapService.shapes[x-start].length; y++){
+              $scope.shapes[x] += "[" + MapService.shapes[x-start][y].shape_pt_lat + "," + MapService.shapes[x-start][y].shape_pt_lon + "],";
             }
             $scope.shapes[x] = "[" + $scope.shapes[x].slice(0, -1) + "]";
           }
-          //console.log(MapService.trips.length);
-          for(x = 0; x < $scope.shapes.length; x++)
-            console.log($scope.shapes[x]);
+          for(x = 0; x < MapService.tripType.length; x++){
+            $scope.tripType.push(tripTypeDir[MapService.tripType[x]]);
+          }
+          for(x = 0; x < MapService.stops.length; x++){
+            for(y = 0; y < MapService.stops[x].length; y++){
+              console.log(x + "," + y);
+              var iconMark = "./img/" + $scope.tripType[x] + "/" + $scope.colours[x].slice(1, 7) + ".png";
+              var mark = new google.maps.Marker({
+                position: {lat: MapService.stops[x][y].stop_lat, lng: MapService.stops[x][y].stop_lon},
+                map: map,
+                icon: iconMark
+              });
+              console.log(mark);
+              $scope.markers.push(mark);
+            }
+          }
+          var circleCenter = "[" + lat + "," + lon + "]";
+          $scope.circles.push({
+            center: circleCenter,
+            radius: $scope.dist
+          });
+          $scope.markerAnimation = false;
+          $scope.img = "dyMap.png";
         }
       }, function(err){
         console.log(err);

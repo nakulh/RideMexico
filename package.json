@@ -24,6 +24,10 @@
     {
       "locator": "https://github.com/litehelpers/Cordova-sqlite-storage.git",
       "id": "cordova-sqlite-storage"
+    },
+    {
+      "locator": "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
+      "id": "cordova-plugin-x-toast"
     }
   ],
   "cordovaPlatforms": [
