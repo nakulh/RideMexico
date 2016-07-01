@@ -83,7 +83,7 @@ app.factory('MapService', function($http, $q){
                               self.tripIdsD.push(self.trips[x].trip_id);
                               self.routes.push(routes[y]);
                               self.tripsNoRepeat.push(self.trips[x]);
-                              self.tripType.push(routes[x].route_type);
+                              self.tripType.push(routes[y].route_type);
                               selRoutes[id] = true;
                             }
                           }
