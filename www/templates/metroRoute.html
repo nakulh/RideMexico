@@ -1,6 +1,6 @@
 <ion-view>
   <ion-nav-title>Metro Route: {{route.route_short_name}}</ion-nav-title>
-  <ion-tabs class="tabs-positive tabs-icon-top">
+  <ion-tabs class="tabs-positive tabs-icon-top tabs-top tabs-striped">
 
     <ion-tab title="Stations" icon-on="ion-ios-flag" icon-off="ion-ios-flag-outline">
       <ion-content>
@@ -144,8 +144,81 @@
           stroke-opacity="1.0" stroke-weight="3"
           path={{shapes}}>
         </shape>
-        <marker position="{{stopMap}}" ng-repeat="stopMap in stopsMap" icon="../img/trainMarker.png"></marker>
+        <marker position="{{stopMap}}" ng-repeat="stopMap in stopsMap" icon="img/trainMarker.png"></marker>
       </ng-map>
+    </ion-tab>
+    <ion-tab title="Community" icon-on="ion-android-people" icon-off="ion-android-people">
+      <h1>f</h1>
+      <ion-content>
+        <!-- ion-happy-outline ion-heart-broken ion-heart ion-sad-outline-->
+        <div class="row action-buttons">
+          <div class="col col-75">
+            <button class="button button-block button-balanced">Add A Card</button>
+          </div>
+          <div class="col">
+            <button class="button assertive button-block icon-left ion-heart">5</button>
+          </div>
+        </div>
+        <div class="list card first">
+          <div class="item">
+            <h2>Marty McFly</h2>
+            <p>November 05, 2016</p>
+          </div>
+          <div class="item item-body">
+            <img class="full-image" src="img/samples/metro1.jpg">
+            <p>
+              This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
+              the content is from a card-body consisting of an image and paragraph text. The footer
+              consists of tabs, icons aligned left, within the card-footer.
+            </p>
+            <p>
+              <a href="#" class="subdued">1 Like</a>
+              <a href="#" class="subdued">5 Replies</a>
+              <img src="img/emotions/angry.png" height="30" width="30">
+              <img src="img/emotions/dislike.png" height="30" width="30">
+            </p>
+          </div>
+        </div>
+        <div class="list card">
+          <div class="item">
+            <h2>King Kong</h2>
+            <p>October 05, 2016</p>
+          </div>
+          <div class="item item-body">
+            <p>
+              This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
+              the content is from a card-body consisting of an image and paragraph text. The footer
+              consists of tabs, icons aligned left, within the card-footer.
+            </p>
+            <p>
+              <a href="#" class="subdued">1 Like</a>
+              <a href="#" class="subdued">0 Replies</a>
+              <img src="img/emotions/happy.png" height="30" width="30">
+            </p>
+          </div>
+        </div>
+        <div class="list card">
+          <div class="item">
+            <h2>King Kong</h2>
+            <p>October 05, 2016</p>
+          </div>
+          <div class="item item-body">
+            <img class="full-image" src="img/samples/metro2.jpg">
+            <p>
+              This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
+              the content is from a card-body consisting of an image and paragraph text. The footer
+              consists of tabs, icons aligned left, within the card-footer.
+            </p>
+            <p>
+              <a href="#" class="subdued">1 Like</a>
+              <a href="#" class="subdued">0 Replies</a>
+              <img src="img/emotions/confused.png" height="30" width="30">
+              <img src="img/emotions/question.png" height="30" width="30">
+              <img src="img/emotions/vomit.png" height="30" width="30">
+            </p>
+          </div>
+        </div>
+      </ion-content>
     </ion-tab>
 
   </ion-tabs>

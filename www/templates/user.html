@@ -1,0 +1,86 @@
+<link href="css/font.css" rel="stylesheet">
+<ion-view ng-controller="UserCtrl" view-title="Account">
+  <ion-nav-title>Account</ion-nav-title>
+  <ion-content ng-app="UserCtrl" scroll="false">
+    <video autoplay loop id="bgvid" webkit-playsinline ng-class="{'bright-vid': vid}">
+        <source src="img/bgVideo.MP4" type="video/mp4">
+    </video>
+    <h1 class="ride-mexico">Ride Mexico</h1>
+    <div ng-if="!user">
+      <div ng-show="form" ng-init="form = true" class="login">
+        <label class="item-input item-floating-label form-element">
+          <span class="input-label">E-mail</span>
+          <input type="text" ng-model="email" placeholder="E-mail" required="true">
+        </label>
+        <label class="item-input item-floating-label form-element">
+          <span class="input-label">Password</span>
+          <input type="password" ng-model="password" placeholder="Password" required="true">
+        </label>
+        <button ng-click="initLogin(email, password)" class="button button-block button-energized">
+          Login
+        </button>
+        <button ng-click="form = false" class="button button-clear button-small button-positive">
+          Click here to register
+        </button>
+      </div>
+      <div ng-show="!form" class="register">
+        <label class="item-input item-floating-label form-element">
+          <span class="input-label">Full Name</span>
+          <input type="text" ng-model="fullname" placeholder="Full Name" required="true">
+        </label>
+        <label class="item-input item-floating-label form-element">
+          <span class="input-label">Username</span>
+          <input type="text" ng-model="username" placeholder="Username" required="true">
+        </label>
+        <label class="item-input item-floating-label form-element">
+          <span class="input-label">E-mail</span>
+          <input type="text" ng-model="email" placeholder="E-mail" required="true">
+        </label>
+        <label class="item-input item-floating-label form-element">
+          <span class="input-label">Password</span>
+          <input type="password" ng-model="password" placeholder="Password" required="true">
+        </label>
+        <button ng-click="initRegister(fullname, username, email, password)" class="button button-block button-assertive">
+          Register
+        </button>
+        <button ng-click="form = true" class="button button-clear button-small button-positive">
+          Click here to login
+        </button>
+      </div>
+    </div>
+    <div ng-if="user">
+    <ion-list class="user">
+      <ion-item class="stats">
+        <div class="row">
+          <div class="col-33 col-offset-10 fav padding-top">
+            <i class="ion-heart stat-fav"></i><span class="padding">4</span>
+            <h2 class="stat-label-fav">favorites</h2><br>
+          </div>
+          <div class="col-33 col-offset-10 review padding-top">
+            <i class="ion-thumbsup stat-review"></i><span class="padding">12</span>
+            <h2 class="stat-label-review">reviews</h2><br>
+          </div>
+        </div>
+      </ion-item>
+      <ion-item class="edit-info item item-icon-right">
+        <i class="icon ion-edit"></i>
+        <h2>Change E-mail Address</h2>
+      </ion-item>
+      <ion-item class="edit-info item item-icon-right">
+        <h2>Change password</h2>
+        <i class="icon ion-edit"></i>
+      </ion-item>
+      <ion-item class="edit-info item item-icon-right">
+        <h2>Reset password</h2>
+        <i class="icon ion-ios-loop-strong"></i>
+      </ion-item>
+      <ion-item class="edit-info item item-icon-right assertive">
+        <h2>Delete Account</h2>
+        <i class="icon ion-android-alert"></i>
+      </ion-item>
+    </div>
+    <div ng-if="user" class="bar bar-footer bar-dark">
+      <div ng-click="logout()" class="title">Logout</div>
+    </div>
+  </ion-content>
+</ion-view>

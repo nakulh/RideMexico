@@ -121,7 +121,7 @@ app.controller('MapController', function($scope, MapService, NgMap, $cordovaToas
             for(y = 0; y < MapService.stops[x].length; y++){
               $scope.markers.push({
                 position: "",
-                icon: "./img/" + $scope.tripType[x] + "/" + $scope.colours[x].slice(1, 7) + ".png",
+                icon: "img/" + $scope.tripType[x] + "/" + $scope.colours[x].slice(1, 7) + ".png",
               });
               $scope.markers[$scope.markers.length - 1].position = "[" + MapService.stops[x][y].stop_lat + ", " + MapService.stops[x][y].stop_lon + "]";
               $scope.markersData.push({

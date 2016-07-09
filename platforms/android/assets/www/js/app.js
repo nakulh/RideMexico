@@ -7,6 +7,7 @@
 var app = angular.module('RideMexico',
   ['ionic',
    'starter.controllers',
+   'User.controllers',
    'ngCordova',
    'Database.controllers',
    'ngMap',
@@ -34,11 +35,20 @@ var app = angular.module('RideMexico',
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-    .state('app', {
+  .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
+  })
+  .state('app.user', {
+    url: '/user',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/user.html'
+      }
+    },
+    controller: 'UserCtrl'
   })
 
   .state('app.database', {
@@ -163,5 +173,5 @@ var app = angular.module('RideMexico',
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/database');
+  $urlRouterProvider.otherwise('/app/user');
 });

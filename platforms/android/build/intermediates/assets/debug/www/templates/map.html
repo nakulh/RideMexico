@@ -3,23 +3,23 @@
 <ion-nav-title>Dyanmic Map</ion-nav-title>
 <ion-tabs class="tabs-positive tabs-icon-top tabs-top tabs-striped">
   <ul class="map-ul" ng-if="status" ng-class="{'map-but': !gotNewAddress, 'map-add-bar button button-stable animate-map-ul': gotNewAddress}">
-    <li ng-if="!gotNewAddress" class="map-li map-but-select"><a style="color: black" ng-click="selectLocation()">Select Location</a></li>
-    <li ng-if="!gotNewAddress" class="map-li map-but-clear"><a style="color: black" ng-click="clearMap()">Clear Map</a></li>
+    <li ng-if="!gotNewAddress" class="map-li map-but-select" ng-click="selectLocation()"><a style="color: black" ng-click="selectLocation()">Select Location</a></li>
+    <li ng-if="!gotNewAddress" class="map-li map-but-clear" ng-click="clearMap()"><a style="color: black">Clear Map</a></li>
     <li ng-if="gotNewAddress" class="map-li map-add-li"><a class="map-add" style="color: black">{{address}}</a></li>
   </ul>
-  <img src="../img/{{img}}" class="map-pointer" ng-if="status" ng-class="{'animate-marker': markerAnimation}">
+  <img src="img/{{img}}" class="map-pointer" ng-if="status" ng-class="{'animate-marker': markerAnimation}">
     <ion-tab title="Map" icon-on="ion-android-map" icon-off="ion-android-map"  on-select="shower()" on-deselect="hider()">
       <ng-map zoom="14" center="[19.669948192592543, -99.17607307434082]">
         <shape ng-if="shapes.length > 0" ng-repeat="shape in shapes track by $index" id="polyline" name="polyline"
-          geodesic="true" stroke-color={{colours[$index]}}
-          stroke-opacity="1.0" stroke-weight="3"
-          path={{shape}}>
+          geodesic="true" stroke-color={{shape.colour}}
+          stroke-opacity="0.80" stroke-weight="3"
+          path={{shape.polyline}}>
         </shape>
-        <marker ng-repeat="greenMarker in greenMarkers track by $index" position={{greenMarker}} icon="http://maps.google.com/mapfiles/ms/icons/green-dot.png"></marker>
         <shape ng-repeat="circle in circles track by $index" id="circle" name="circle"
           stroke-color='#f2f2f2' stroke-opacity="0.4" stroke-weight="2"
           center={{circle.center}} radius={{circle.radius}}>
         </shape>
+        <marker on-click="showPopup()" data="{{markersData[$index]}}" ng-repeat="marker in markers track by $index" position={{marker.position}} icon={{marker.icon}}></marker>
       </ng-map>
     </ion-tab>
 
@@ -35,7 +35,7 @@
           <li class="item item-toggle">
              Bus
              <label class="toggle toggle-balanced">
-               <input type="checkbox">
+               <input type="checkbox" ng-model="bus" ng-change="busChange()">
                <div class="track">
                  <div class="handle"></div>
                </div>
@@ -44,7 +44,7 @@
           <li class="item item-toggle">
              Train
              <label class="toggle toggle-balanced">
-               <input type="checkbox">
+               <input type="checkbox" ng-model="train" ng-change="trainChange()">
                <div class="track">
                  <div class="handle"></div>
                </div>
@@ -53,7 +53,7 @@
           <li class="item item-toggle">
              Metro
              <label class="toggle toggle-balanced">
-               <input type="checkbox">
+               <input type="checkbox" ng-model="metro" ng-change="metroChange()">
                <div class="track">
                  <div class="handle"></div>
                </div>
@@ -61,8 +61,8 @@
           </li>
           <li class="item item-toggle">
              Carrot stations
-             <label class="toggle toggle-balanced">
-               <input type="checkbox">
+             <label class="toggle toggle-energized">
+               <input type="checkbox" ng-model="crtstn" ng-change="crtstnChange()">
                <div class="track">
                  <div class="handle"></div>
                </div>
@@ -71,10 +71,13 @@
           <div class="item item-divider">
             Set Range
           </div>
-          <div class="item range range-positive">
-            <i>50m</i>
-            <input type="range" name="range" min="50" max="3000" value="33">
-            <i>3000m</i>
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <input type="number" placeholder="100 - 2000" ng-model="Dist">
+            </label>
+            <button class="button button-small" ng-click="distSet(Dist)">
+              Submit
+            </button>
           </div>
         </ul>
       </ion-content>

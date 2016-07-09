@@ -127,3 +127,152 @@
 @keyframes mymove {
     50% {transform: rotate(-25deg);}
 }
+
+video#bgvid {
+    -webkit-filter: brightness(0.9);
+    filter: brightness(0.9);
+    position: fixed;
+    top: 50%;
+    left: 0%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background-size: cover;
+    background: url(../img/bgVideo.MP4) no-repeat;
+}
+.bright-vid{
+  -webkit-filter: brightness(1) !important;
+  filter: brightness(1) !important;
+}
+div.login{
+   width: 90vw;
+   left: 5vw;
+   position: absolute;
+   margin-top: 44vh !important;
+   border-radius: 5px;
+}
+div.register{
+   width: 90vw;
+   left: 5vw;
+   position: absolute;
+   margin-top: 27vh !important;
+   border-radius: 5px;
+}
+.form-element{
+  -webkit-box-shadow: inset -1px 4px 26px -4px rgba(0,0,0,0.73);
+  -moz-box-shadow: inset -1px 4px 26px -4px rgba(0,0,0,0.73);
+  box-shadow: inset -1px 4px 26px -4px rgba(0,0,0,0.73);
+  border: 2px solid black;
+  background: #f2f2f2;
+  color: black;
+  margin-bottom: 7px;
+}
+
+.ride-mexico{
+  position: absolute;
+  display: inline;
+  top: 10%;
+  left: 50%;
+  margin-left: -135px;
+  font-family: 'grand_hotelregular';
+  font-size: 70px !important;
+  color: rgb(255, 255, 255);
+  font-size: 41px;
+  text-shadow: rgb(204, 204, 204) 0px 1px 0px,
+              rgb(201, 201, 201) 0px 2px 0px,
+              rgb(187, 187, 187) 0px 3px 0px,
+              rgb(185, 185, 185) 0px 4px 0px,
+              rgb(170, 170, 170) 0px 5px 0px,
+              rgba(0, 0, 0, 0.0980392) 0px 6px 1px,
+              rgba(0, 0, 0, 0.0980392) 0px 0px 5px,
+              rgba(0, 0, 0, 0.298039) 0px 1px 3px,
+              rgba(0, 0, 0, 0.14902) 0px 3px 5px,
+              rgba(0, 0, 0, 0.2) 0px 5px 10px,
+              rgba(0, 0, 0, 0.2) 0px 10px 10px,
+              rgba(0, 0, 0, 0.0980392) 0px 20px 20px;
+}
+
+.user-stats{
+  color: white;
+  text-align: center;
+}
+.stat-label-fav{
+  color: #ef473a;
+  text-align: center;
+  font-size: 18px !important;
+}
+.stat-label-review{
+  color: #387ef5;
+  text-align: center;
+  padding-bottom: 0px !important;
+  font-size: 18px !important;
+}
+.stat-fav{
+  color: #ef473a;
+  text-align: right;
+  font-size: 30px;
+}
+.stat-review{
+  color: #387ef5;
+  text-align: center;
+  font-size: 30px;
+}
+.fav{
+  text-align: center;
+  color: #ef473a;
+  background-color: #f7f3f0;
+  border-radius: 3px;
+  box-shadow: 0px 1px 5px -1px rgba(0,0,0,0.71);
+  border: 1px solid grey;
+}
+.review{
+  text-align: center;
+  color: #387ef5;
+  background-color: #f7f3f0;
+  border-radius: 3px;
+  box-shadow: 0px 1px 5px -1px rgba(0,0,0,0.71);
+  border: 1px solid grey;
+}
+.stats{
+  background-color: #edeae3 !important;
+}
+
+.border1{
+  border-top: 5px solid #886aea;
+}
+.border2{
+  border-top: 5px solid #444;
+}
+.border3{
+  border-top: 5px solid #ef473a;
+}
+.border4{
+  border-top: 5px solid #ffc900;
+}
+.border5{
+  border-top: 5px solid #33cd5f;
+}
+.border6{
+  border-top: 5px solid #11c1f3;
+}
+.border7{
+  border-top: 5px solid #387ef5;
+}
+.border8{
+  border-top: 5px solid #f8f8f8;
+}
+
+.action-buttons{
+  height: 43px !important;
+  margin-top: -12px !important;
+}
+.first{
+  -webkit-box-shadow: 0px -1px 4px -1px rgba(0,0,0,1);
+-moz-box-shadow: 0px -1px 4px -1px rgba(0,0,0,1);
+box-shadow: 0px -1px 4px -1px rgba(0,0,0,1);
