@@ -11,7 +11,8 @@ var app = angular.module('RideMexico',
    'ngCordova',
    'Database.controllers',
    'ngMap',
-   'Map.controllers'
+   'Map.controllers',
+   'addCard.controller'
    //'Search.controllers',
    //'Personal.controllers'
   ])
@@ -169,6 +170,15 @@ var app = angular.module('RideMexico',
       'menuContent':{
         templateUrl: 'templates/busTripRoute.html',
         controller: 'BusTripRouteController'
+      }
+    }
+  })
+  .state('app.AddCard', {
+    url: '/addcard/:routeId/:tripId/:type',
+    views: {
+      'menuContent':{
+        templateUrl: 'templates/newCard.html',
+        controller: 'AddCardCtrl'
       }
     }
   });

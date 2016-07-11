@@ -109,7 +109,7 @@ app.controller('MetroRoutesListController', function($scope, RoutesService){
   });
 });
 
-app.controller('MetroRouteController', function($scope, MetroTrainRouteService, $stateParams){
+app.controller('MetroRouteController', function($scope, MetroTrainRouteService, $stateParams, $ionicPopup, $location){
   MetroTrainRouteService.getRouteDetails($stateParams.routeId).then(function success(data){
     var routesSeg1 = [];
     var routesSeg2 = [];
@@ -181,6 +181,23 @@ app.controller('MetroRouteController', function($scope, MetroTrainRouteService, 
       stopMap = $scope.stops[x].stop_lat + "," + $scope.stops[x].stop_lon;
       $scope.stopsMap.push(stopMap);
     }
+
+    //This Part Handles the add card function
+    var notLoggedIn = function(){
+      var alertPopup = $ionicPopup.alert({
+        title: 'Ouchie !',
+        template: 'You must be logged in to use this function'
+      });
+    };
+
+    $scope.addCard = function($event) {
+       if (firebase.auth().currentUser) {
+          var path = "/app/addcard/" + $stateParams.routeId + "/x/" + "metro";
+          $location.path(path);
+        } else {
+          notLoggedIn();
+        }
+    };
   }, function(err){
     console.log(err);
   });
@@ -192,7 +209,7 @@ app.controller('StopMapController', function($scope, $stateParams){
   $scope.desc = $stateParams.desc;
 });
 
-app.controller('TrainRouteController', function($scope, MetroTrainRouteService, $stateParams){
+app.controller('TrainRouteController', function($scope, MetroTrainRouteService, $stateParams, $location){
   MetroTrainRouteService.getRouteDetails($stateParams.routeId).then(function success(data){
     $scope.cont = false;
     var routesSeg1 = [];
@@ -252,6 +269,22 @@ app.controller('TrainRouteController', function($scope, MetroTrainRouteService, 
       stopMap = $scope.stops[x].stop_lat + "," + $scope.stops[x].stop_lon;
       $scope.stopsMap.push(stopMap);
     }
+    //Handles new card
+    var notLoggedIn = function(){
+      var alertPopup = $ionicPopup.alert({
+        title: 'Ouchie !',
+        template: 'You must be logged in to use this function'
+      });
+    };
+
+    $scope.addCard = function($event) {
+       if (firebase.auth().currentUser) {
+          var path = "/app/addcard/" + $stateParams.routeId + "/x/" + "train";
+          $location.path(path);
+        } else {
+          notLoggedIn();
+        }
+    };
   }, function(err){
     console.log(err);
   });
@@ -276,7 +309,7 @@ app.controller('BusTripController', function($scope, $stateParams, BusTripServic
   });
 });
 
-app.controller('BusTripRouteController', function($scope, $stateParams, BusTripRouteService, $http, BusTripCalenderService){
+app.controller('BusTripRouteController', function($scope, $stateParams, BusTripRouteService, $http, BusTripCalenderService, $location){
   BusTripRouteService.getRouteDetails($stateParams.tripId).then(function(data){
     $scope.stops = BusTripRouteService.stops;
     $scope.routeTime = BusTripRouteService.routeTime;
@@ -326,12 +359,6 @@ app.controller('BusTripRouteController', function($scope, $stateParams, BusTripR
       for(x = multipleTrips[0] + multipleTrips[1] + multipleTrips[2]; x < multipleTrips[3] + multipleTrips[2] + multipleTrips[0] + multipleTrips[1]; x++)
         $scope.fourFrequency.push($scope.frequencies[x]);
     $scope.frequencies = [$scope.oneFrequency, $scope.twoFrequency, $scope.threeFrequency, $scope.fourFrequency];
-  /*this.datas = $scope.weeks.map(function(value, index) {
-      return {
-        week: value,
-        frequency: frequencies[index]
-      };
-    });*/
 
     BusTripCalenderService.getCalender(diffServiceId).then(function(weeks){
       $scope.weeks = weeks;
@@ -339,6 +366,7 @@ app.controller('BusTripRouteController', function($scope, $stateParams, BusTripR
     }, function(err){
       console.log(err);
     });
+
     //Make a string out of the shapes information
     $scope.shapes = "";
     for(x = 0; x < BusTripRouteService.shapes.length; x++)
@@ -359,7 +387,24 @@ app.controller('BusTripRouteController', function($scope, $stateParams, BusTripR
     console.log(diffServiceId[x]);
   for(x = 0; x < $scope.oneFrequency.length; x++)
     console.log($scope.oneFrequency[x]);
-  console.log(multipleTrips);
+  //console.log(multipleTrips);
+
+  //Handles new card
+  var notLoggedIn = function(){
+    var alertPopup = $ionicPopup.alert({
+      title: 'Ouchie !',
+      template: 'You must be logged in to use this function'
+    });
+  };
+
+  $scope.addCard = function($event) {
+     if (firebase.auth().currentUser) {
+        var path = "/app/addcard/" + $stateParams.routeId + "/" + $stateParams.tripId + "/" + "bus";
+        $location.path(path);
+      } else {
+        notLoggedIn();
+      }
+  };
   }, function(err){
       console.log(err);
   });

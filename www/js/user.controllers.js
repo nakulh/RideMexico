@@ -1,5 +1,5 @@
 var app = angular.module('User.controllers', []);
-app.controller('UserCtrl', function($scope, $ionicPopup, $window){
+app.controller('UserCtrl', function($scope, $ionicPopup){
   var registered = function() {
      var alertPopup = $ionicPopup.alert({
        title: 'Registeration Complete',
@@ -27,6 +27,13 @@ app.controller('UserCtrl', function($scope, $ionicPopup, $window){
      console.log('Thank you for not eating my delicious ice cream cone');
    });
   };
+  var createUserInDb = function(id, fullname){
+    firebase.database().ref('users/' + id).set({
+      posts: {},
+      favorites: [],
+      fullname: fullname
+    });
+  };
 
   firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
@@ -34,7 +41,7 @@ app.controller('UserCtrl', function($scope, $ionicPopup, $window){
     $scope.vid = true;
   } else {
     $scope.vid = false;
-  }
+    }
   });
 
   $scope.initLogin = function(email, password){
@@ -52,12 +59,10 @@ app.controller('UserCtrl', function($scope, $ionicPopup, $window){
     firebase.auth().createUserWithEmailAndPassword(email, password).then(function(user) {
     if(user){
       user.updateProfile({
-        fullname: fullname,
         displayName: username,
-        reviewCount: 0,
-        favorites: []
       }).then(function() {
         $scope.user = firebase.auth().currentUser;
+        createUserInDb(user.uid, fullname);
         $scope.vid = true;
         registered();
       }, function(error) {

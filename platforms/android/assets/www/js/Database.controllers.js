@@ -109,7 +109,7 @@ app.controller('MetroRoutesListController', function($scope, RoutesService){
   });
 });
 
-app.controller('MetroRouteController', function($scope, MetroTrainRouteService, $stateParams){
+app.controller('MetroRouteController', function($scope, MetroTrainRouteService, $stateParams, $ionicPopover, $ionicPopup){
   MetroTrainRouteService.getRouteDetails($stateParams.routeId).then(function success(data){
     var routesSeg1 = [];
     var routesSeg2 = [];
@@ -181,6 +181,31 @@ app.controller('MetroRouteController', function($scope, MetroTrainRouteService, 
       stopMap = $scope.stops[x].stop_lat + "," + $scope.stops[x].stop_lon;
       $scope.stopsMap.push(stopMap);
     }
+
+    //This Part Handles the add card function
+    var template = '<ion-popover-view><ion-header-bar> <h1 class="title">My Popover Title</h1> </ion-header-bar> <ion-content> Hello! </ion-content></ion-popover-view>';
+    var notLoggedIn = function(){
+      var alertPopup = $ionicPopup.alert({
+        title: 'Ouchie !',
+        template: 'You must be logged in to use this function'
+      });
+     alertPopup.then(function(res) {
+       console.log('Thank you for not eating my delicious ice cream cone');
+     });
+    };
+    
+    $scope.popover = $ionicPopover.fromTemplate(template, {
+      scope: $scope
+    });
+    $scope.addCard = function($event) {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          $scope.popover.show($event);
+        } else {
+          notLoggedIn();
+        }
+      });
+    };
   }, function(err){
     console.log(err);
   });

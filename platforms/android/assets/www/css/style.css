@@ -129,8 +129,8 @@
 }
 
 video#bgvid {
-    -webkit-filter: brightness(0.6);
-    filter: brightness(0.5);
+    -webkit-filter: brightness(0.9);
+    filter: brightness(0.9);
     position: fixed;
     top: 50%;
     left: 0%;
@@ -276,3 +276,17 @@ div.register{
   -webkit-box-shadow: 0px -1px 4px -1px rgba(0,0,0,1);
 -moz-box-shadow: 0px -1px 4px -1px rgba(0,0,0,1);
 box-shadow: 0px -1px 4px -1px rgba(0,0,0,1);
+}
+
+.description{
+  height: 100px !important;
+}
+
+.ion-android-locate{
+  font-size: 20px;
+}
+
+.grey-img{
+  -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+  filter: grayscale(100%);
+}

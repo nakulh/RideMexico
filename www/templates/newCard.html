@@ -1,0 +1,37 @@
+<ion-view view-title="Add A Card">
+  <ion-content scroll="false">
+    <div class="list">
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Title</span>
+        <input ng-model="title" type="text" placeholder="Enter a Title" required="true">
+      </label>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Description</span>
+        <input ng-model="description" class="description" type="textarea" placeholder="Enter a Description" required="true">
+      </label>
+      <ion-checkbox ng-model="addLocation">Add current Location</ion-checkbox>
+      <ion-item>
+        <h2 class="assertive">Add Emotions</h2>
+        <p>
+          <img ng-click="selectEmotion('confused')" ng-class="{'grey-img': !emotion.confused}" src="img/emotions/confused.png" height="45" width="45">
+          <img ng-click="selectEmotion('question')" ng-class="{'grey-img': !emotion.question}" src="img/emotions/question.png" height="45" width="45">
+          <img ng-click="selectEmotion('vomit')" ng-class="{'grey-img': !emotion.vomit}" src="img/emotions/vomit.png" height="45" width="45">
+          <img ng-click="selectEmotion('angry')" ng-class="{'grey-img': !emotion.angry}" src="img/emotions/angry.png" height="45" width="45">
+          <img ng-click="selectEmotion('happy')" ng-class="{'grey-img': !emotion.happy}" src="img/emotions/happy.png" height="45" width="45">
+          <img ng-click="selectEmotion('hurt')" ng-class="{'grey-img': !emotion.hurt}" src="img/emotions/hurt.png" height="45" width="45"><br>
+          <img ng-click="selectEmotion('like')" ng-class="{'grey-img': !emotion.like}" src="img/emotions/like.png" height="45" width="45">
+          <img ng-click="selectEmotion('sad')" ng-class="{'grey-img': !emotion.sad}" src="img/emotions/sad.png" height="45" width="45">
+          <img ng-click="selectEmotion('dislike')" ng-class="{'grey-img': !emotion.dislike}" src="img/emotions/dislike.png" height="45" width="45">
+        </p>
+      </ion-item>
+  </div>
+  <img id="myImage" src="">
+  <button ng-click="post(title, description)" class="button button-assertive button-full">
+    Post
+  </button>
+  </ion-content>
+  <div class="bar bar-footer bar-royal">
+    <button ng-click="addPic('camera')" class="button button-clear icon-left ion-android-camera">Take A Pic</button>
+    <button ng-click="addPic('library')" class="button button-clear icon-right ion-ios-crop-strong">Add Pic From Gallery</button>
+  </div>
+</ion-view>

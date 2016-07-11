@@ -1,6 +1,6 @@
 <ion-view>
   <ion-nav-title>Bus Route: {{trips[0].route_short_name}}</ion-nav-title>
-  <ion-tabs class="tabs-positive tabs-icon-top">
+  <ion-tabs class="tabs-positive tabs-icon-top tabs-top tabs-striped">
 
     <ion-tab title="Stations" icon-on="ion-ios-flag" icon-off="ion-ios-flag-outline">
       <ion-content>
@@ -17,10 +17,9 @@
     </ion-tab>
 
     <ion-tab title="Timing" icon-on="ion-android-time" icon-off="ion-ios-clock-outline">
+      <h1>BusRoute</h1>
       <ion-content class="padding-top">
         <ion-list>
-          <ion-item><h1>BusRoute</h1></ion-item>
-
           <ion-item class="item-divider">
               <h2>{{trips[0].trip_desc}}</h2>
               <h5 class="assertive">Total route time: {{routeTime}}</h5>
@@ -72,13 +71,13 @@
       <ion-content>
         <div class="row action-buttons">
           <div class="col col-75">
-            <button class="button button-block button-balanced">Add A Card</button>
+            <button ng-click="addCard()" class="button button-block button-balanced">Add A Card</button>
           </div>
           <div class="col">
             <button class="button assertive button-block icon-left ion-heart">5</button>
           </div>
         </div>
-        <div class="list first">
+        <div class="list card first">
           <div class="item">
             <h2>King Kong</h2>
             <p>October 05, 2016</p>
@@ -86,8 +85,7 @@
           <div class="item item-body">
             <p>
               This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
-              the content is from a card-body consisting of an image and paragraph text. The footer
-              consists of tabs, icons aligned left, within the card-footer.
+              the content is from a card-body consisting of an image and paragraph text.
             </p>
             <p>
               <a href="#" class="subdued">1 Like</a>
@@ -102,11 +100,10 @@
             <p>October 05, 2016</p>
           </div>
           <div class="item item-body">
-            <img class="full-image" src="img/samples/bus1.jpg">
+            <img class="full-image" src="img/samples/bus1.jpeg">
             <p>
               This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
-              the content is from a card-body consisting of an image and paragraph text. The footer
-              consists of tabs, icons aligned left, within the card-footer.
+              the content is from a card-body consisting of an image and paragraph text.
             </p>
             <p>
               <a href="#" class="subdued">1 Like</a>
