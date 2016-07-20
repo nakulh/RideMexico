@@ -3,6 +3,7 @@
   <ion-content scroll="false">
     <ng-map zoom="14" center={{pos}}>
       <marker
+        ng-click="showPopup()"
         icon="img/me-marker.png"
         position="{{pos}}">
       </marker>

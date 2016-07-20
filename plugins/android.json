@@ -33,6 +33,9 @@
         },
         "cordova-plugin-camera": {
             "PACKAGE_NAME": "com.ionicframework.ridemexico828491"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.ionicframework.ridemexico828491"
         }
     },
     "dependent_plugins": {

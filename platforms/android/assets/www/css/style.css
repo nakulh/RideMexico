@@ -147,8 +147,8 @@ video#bgvid {
     background: url(../img/bgVideo.MP4) no-repeat;
 }
 .bright-vid{
-  -webkit-filter: brightness(1) !important;
-  filter: brightness(1) !important;
+  -webkit-filter: brightness(0.5) !important;
+  filter: brightness(0.5) !important;
 }
 div.login{
    width: 90vw;
@@ -163,6 +163,9 @@ div.register{
    position: absolute;
    margin-top: 27vh !important;
    border-radius: 5px;
+}
+.user-form{
+  height: 72px;
 }
 .form-element{
   -webkit-box-shadow: inset -1px 4px 26px -4px rgba(0,0,0,0.73);

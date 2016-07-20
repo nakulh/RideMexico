@@ -156,11 +156,9 @@ app.controller('MapController', function($scope, MapService, NgMap, $cordovaToas
   $scope.status = true;
   $scope.shower = function(){
     $scope.status = true;
-    console.log("show");
   };
   $scope.hider = function () {
     $scope.status = false;
-    console.log("hide");
   };
   $scope.showPopup = function() {
     console.log(this.data);

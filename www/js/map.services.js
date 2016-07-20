@@ -11,6 +11,15 @@ app.factory('MapService', function($http, $q){
 
     return 12742 * Math.asin(Math.sqrt(a)) * 1000; // 2 * R; R = 6371 km
   };
+  var sort = function(arr, high, low, key, find){
+    mid = (high + low) / 2;
+    if(arr[mid][key] == find)
+      return arr[mid];
+    else if(arr[mid][key] > find)
+      sort(arr.slice(0, mid) , mid, low, key, find);
+    else
+      sort(arr.slice(mid+1, high+1), high, mid+1, key, find);
+  };
   self.getRoutes = function(lat, lon, dist, bus, train, metro){
     d = $q.defer();
     self.stopIds = [];

@@ -1,11 +1,12 @@
 <link href="css/font.css" rel="stylesheet">
+<link href="css/userfont/stylesheet.css" rel="stylesheet">
 <ion-view ng-controller="UserCtrl" view-title="Account">
   <ion-nav-title>Account</ion-nav-title>
   <ion-content ng-app="UserCtrl" scroll="false">
     <video autoplay loop id="bgvid" webkit-playsinline ng-class="{'bright-vid': vid}">
         <source src="img/bgVideo.MP4" type="video/mp4">
     </video>
-    <h1 class="ride-mexico">Ride Mexico</h1>
+    <h1 ng-if="!user" class="ride-mexico">Ride Mexico</h1>
     <div ng-if="!user">
       <div ng-show="form" ng-init="form = true" class="login">
         <label class="user-form item-input item-floating-label form-element">
@@ -49,38 +50,27 @@
       </div>
     </div>
     <div ng-if="user">
-    <ion-list class="user">
-      <ion-item class="stats">
-        <div class="row">
-          <div class="col-33 col-offset-10 fav padding-top">
-            <i class="ion-heart stat-fav"></i><span class="padding">4</span>
-            <h2 class="stat-label-fav">favorites</h2><br>
-          </div>
-          <div class="col-33 col-offset-10 review padding-top">
-            <i class="ion-thumbsup stat-review"></i><span class="padding">12</span>
-            <h2 class="stat-label-review">reviews</h2><br>
-          </div>
-        </div>
-      </ion-item>
-      <ion-item class="edit-info item item-icon-right">
-        <i class="icon ion-edit"></i>
-        <h2>Change E-mail Address</h2>
-      </ion-item>
-      <ion-item class="edit-info item item-icon-right">
-        <h2>Change password</h2>
-        <i class="icon ion-edit"></i>
-      </ion-item>
-      <ion-item class="edit-info item item-icon-right">
-        <h2>Reset password</h2>
-        <i class="icon ion-ios-loop-strong"></i>
-      </ion-item>
-      <ion-item class="edit-info item item-icon-right assertive">
-        <h2>Delete Account</h2>
-        <i class="icon ion-android-alert"></i>
-      </ion-item>
-    </div>
-    <div ng-if="user" class="bar bar-footer bar-dark">
-      <div ng-click="logout()" class="title">Logout</div>
+      <h2 class="bg-user username">Username</h2>
+      <div class="bg-user favs">
+        <i class="ion-heart stat-fav"></i><span class="padding stat-fav">4</span>
+      </div>
+      <div class="bg-user cards">
+        <span class="stat-cards">Cards: 4</span>
+      </div>
+      <div class="bg-user late">
+        <img src="img/emotions/late.png" height="27px" width="27px"><span class="padding stat-late">78</span>
+      </div>
+      <div class="bg-user conjusted">
+        <img src="img/emotions/conjusted.png" height="27px" width="27px"><span class="padding stat-conjusted">0</span>
+      </div>
+      <div class="bg-user unmaintained">
+        <img src="img/emotions/unmaintained.png" height="27px" width="27px"><span class="padding stat-unmaintained">5</span>
+      </div>
+      <!--<div class="bg-user">
+        <canvas id="doughnut" class="chart chart-doughnut"
+          chart-data="data" chart-labels="labels">
+        </canvas>
+      </div>-->
     </div>
   </ion-content>
 </ion-view>

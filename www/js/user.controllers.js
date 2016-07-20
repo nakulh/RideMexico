@@ -1,4 +1,4 @@
-var app = angular.module('User.controllers', []);
+var app = angular.module('User.controllers', ['chart.js']);
 app.controller('UserCtrl', function($scope, $ionicPopup){
   var registered = function() {
      var alertPopup = $ionicPopup.alert({
@@ -30,6 +30,10 @@ app.controller('UserCtrl', function($scope, $ionicPopup){
   var createUserInDb = function(id, fullname){
     firebase.database().ref('users/' + id).set({
       posts: {},
+      cards: 0,
+      late: 0,
+      conjusted: 0,
+      unmaintained: 0,
       favorites: [],
       fullname: fullname
     });
@@ -73,7 +77,6 @@ app.controller('UserCtrl', function($scope, $ionicPopup){
       formError(err.message);
     });
   };
-
   $scope.logout = function(){
     firebase.auth().signOut().then(function() {
       $scope.user = false;
@@ -82,4 +85,7 @@ app.controller('UserCtrl', function($scope, $ionicPopup){
       console.log(err);
     });
   };
+  //ChartJsProvider.setOptions({ colors : [ '#ff66ff', '#79ff4d', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
+  $scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
+  $scope.data = [300, 500, 100];
 });
