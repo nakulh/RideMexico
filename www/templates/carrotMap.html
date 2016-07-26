@@ -1,0 +1,16 @@
+<ion-view>
+  <ion-nav-title>Carrot Map</ion-nav-title>
+  <ion-content>
+    <ion-list>
+      <ion-item style="height: 90vh important;">
+        <ng-map zoom="14" center={{center}}>
+          <marker ng-repeat="stand in stands track by $index" position={{stand.coordinates}} icon="img/carrot.png"></marker>
+        </ng-map>
+      </ion-item>
+      <ion-item class="item-button-right" ng-click="centerChange(stand)" ng-repeat="stand in stands track by $index">
+        <h2>{{carrot[$index].car}}</h2>
+        <button class="button button-positive button-outline button-small" ng-click="getDirections(carrot[$index])">Get directions</button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

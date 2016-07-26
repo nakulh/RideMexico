@@ -1,27 +1,27 @@
 /* Empty. Add your own CSS if you like */
 .ion-ios-analytics{
   font-size: 25px;
-}
-.ion-android-search{
-  font-size: 25px;
-  margin-right: 3px;
+  margin-right: 8px;
 }
 .ion-map{
   font-size: 25px;
+  margin-right: 8px;
 }
-.ion-android-car{
+.ion-person{
   font-size: 25px;
-  margin-right: 3px;
+  margin-right: 12px;
 }
-
 /*.item-complex .item-content, .item .blackItem{
     background-color: #454345 !important;
     border: none;
-    font-size: 20px;*/
-}
+    font-size: 20px;
+}*/
 /*.menuContent{
     background-color: #454345;
 }*/
+.but-margin{
+  margin-right: 2px !important;
+}
 .border-royal{
   border-bottom: 2px solid #886aea;
 }
@@ -129,8 +129,8 @@
 }
 
 video#bgvid {
-    -webkit-filter: brightness(0.6);
-    filter: brightness(0.5);
+    -webkit-filter: brightness(0.9);
+    filter: brightness(0.9);
     position: fixed;
     top: 50%;
     left: 0%;
@@ -147,8 +147,8 @@ video#bgvid {
     background: url(../img/bgVideo.MP4) no-repeat;
 }
 .bright-vid{
-  -webkit-filter: brightness(1) !important;
-  filter: brightness(1) !important;
+  -webkit-filter: brightness(0.5) !important;
+  filter: brightness(0.5) !important;
 }
 div.login{
    width: 90vw;
@@ -164,6 +164,9 @@ div.register{
    margin-top: 27vh !important;
    border-radius: 5px;
 }
+.user-form{
+  height: 72px;
+}
 .form-element{
   -webkit-box-shadow: inset -1px 4px 26px -4px rgba(0,0,0,0.73);
   -moz-box-shadow: inset -1px 4px 26px -4px rgba(0,0,0,0.73);
@@ -173,7 +176,6 @@ div.register{
   color: black;
   margin-bottom: 7px;
 }
-
 .ride-mexico{
   position: absolute;
   display: inline;
@@ -197,82 +199,119 @@ div.register{
               rgba(0, 0, 0, 0.2) 0px 10px 10px,
               rgba(0, 0, 0, 0.0980392) 0px 20px 20px;
 }
-
-.user-stats{
-  color: white;
+.ride-mexico2{
+  margin-top: 20px !important;
+  font-family: 'grand_hotelregular';
+  font-size: 80px !important;
+  color: rgb(255, 255, 255);
   text-align: center;
+  text-shadow: rgb(204, 204, 204) 0px 1px 0px,
+              rgb(201, 201, 201) 0px 2px 0px,
+              rgb(187, 187, 187) 0px 3px 0px,
+              rgb(185, 185, 185) 0px 4px 0px,
+              rgb(170, 170, 170) 0px 5px 0px,
+              rgba(0, 0, 0, 0.0980392) 0px 6px 1px,
+              rgba(0, 0, 0, 0.0980392) 0px 0px 5px,
+              rgba(0, 0, 0, 0.298039) 0px 1px 3px,
+              rgba(0, 0, 0, 0.14902) 0px 3px 5px,
+              rgba(0, 0, 0, 0.2) 0px 5px 10px,
+              rgba(0, 0, 0, 0.2) 0px 10px 10px,
+              rgba(0, 0, 0, 0.0980392) 0px 20px 20px;
 }
-.stat-label-fav{
-  color: #ef473a;
-  text-align: center;
-  font-size: 18px !important;
-}
-.stat-label-review{
-  color: #387ef5;
-  text-align: center;
-  padding-bottom: 0px !important;
-  font-size: 18px !important;
-}
-.stat-fav{
-  color: #ef473a;
-  text-align: right;
-  font-size: 30px;
-}
-.stat-review{
-  color: #387ef5;
-  text-align: center;
-  font-size: 30px;
-}
-.fav{
-  text-align: center;
-  color: #ef473a;
-  background-color: #f7f3f0;
-  border-radius: 3px;
-  box-shadow: 0px 1px 5px -1px rgba(0,0,0,0.71);
-  border: 1px solid grey;
-}
-.review{
-  text-align: center;
-  color: #387ef5;
-  background-color: #f7f3f0;
-  border-radius: 3px;
-  box-shadow: 0px 1px 5px -1px rgba(0,0,0,0.71);
-  border: 1px solid grey;
-}
-.stats{
-  background-color: #edeae3 !important;
-}
-
-.border1{
-  border-top: 5px solid #886aea;
-}
-.border2{
-  border-top: 5px solid #444;
-}
-.border3{
-  border-top: 5px solid #ef473a;
-}
-.border4{
-  border-top: 5px solid #ffc900;
-}
-.border5{
-  border-top: 5px solid #33cd5f;
-}
-.border6{
-  border-top: 5px solid #11c1f3;
-}
-.border7{
-  border-top: 5px solid #387ef5;
-}
-.border8{
-  border-top: 5px solid #f8f8f8;
-}
-
 .action-buttons{
   height: 43px !important;
   margin-top: -12px !important;
+  margin-bottom: 30px !important;
 }
 .first{
   -webkit-box-shadow: 0px -1px 4px -1px rgba(0,0,0,1);
 -moz-box-shadow: 0px -1px 4px -1px rgba(0,0,0,1);
 box-shadow: 0px -1px 4px -1px rgba(0,0,0,1);
+}
+.description{
+  height: 100px !important;
+}
+.grey-img{
+  -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+  filter: grayscale(100%);
+}
+.profile{
+  margin-top: 10vh !important;
+}
+.bg-user{
+  color: white;
+  background-color: black;
+  font-family: 'andadaregular';
+  opacity: 0.8;
+}
+.username{
+  font-size: 50px;
+  margin-top: 1vh !important;
+  text-align: center;
+}
+.favs{
+  padding: 10px;
+  width: 45vw;
+  text-align: center;
+}
+.stat-fav{
+  color: #ff66ff;
+  font-size: 25px;
+}
+.cards{
+  padding: 10px;
+  width: 45vw;
+  text-align: center;
+  float: right;
+}
+.stat-cards{
+  color: #79ff4d;
+  font-size: 25px;
+}
+.late{
+  margin-top: 45px;
+  padding: 10px;
+  width: 45vw;
+  text-align: center;
+  vertical-align: middle
+}
+.stat-late{
+  font-size: 25px;
+  color: #f1c40f;
+}
+.conjusted{
+  float: right;
+  padding: 10px;
+  width: 45vw;
+  text-align: center;
+  vertical-align: middle
+}
+.stat-conjusted{
+  color: #34495e;
+  font-size: 25px;
+}
+.unmaintained{
+  padding: 10px;
+  width: 45vw;
+  text-align: center;
+  vertical-align: middle;
+  margin-top: 45px;
+}
+.stat-unmaintained{
+  color: #f39c12;
+  font-size: 25px;
+}
+.button-image{
+  margin-top:5px;
+  margin-left:-29px;
+  position:absolute;
+}
+.item .item-content{
+  background-color: transparent !important;
+}
+.item-borderless{
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 0px;
+}

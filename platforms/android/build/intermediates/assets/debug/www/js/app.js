@@ -11,9 +11,8 @@ var app = angular.module('RideMexico',
    'ngCordova',
    'Database.controllers',
    'ngMap',
-   'Map.controllers'
-   //'Search.controllers',
-   //'Personal.controllers'
+   'Map.controllers',
+   'addCard.controller'
   ])
 
 .run(function($ionicPlatform) {
@@ -55,10 +54,10 @@ var app = angular.module('RideMexico',
     url: '/database',
     views: {
       'menuContent': {
-        templateUrl: 'templates/database.html'
+        templateUrl: 'templates/database.html',
+        controller: 'DatabaseMenuCtrl'
       }
-    },
-    controller: 'DatabaseMenuCtrl'
+    }
   })
 
   .state('app.search', {
@@ -118,6 +117,15 @@ var app = angular.module('RideMexico',
       }
     }
   })
+  .state('app.carrotMap', {
+    url: '/database/carrotMap',
+    views: {
+      'menuContent':{
+        templateUrl: 'templates/carrotMap.html',
+        controller: 'carrotMapCtrl'
+      }
+    }
+  })
   .state('app.metroRoute', {
     url: '/database/metroRoute/:routeId',
     views: {
@@ -169,6 +177,15 @@ var app = angular.module('RideMexico',
       'menuContent':{
         templateUrl: 'templates/busTripRoute.html',
         controller: 'BusTripRouteController'
+      }
+    }
+  })
+  .state('app.AddCard', {
+    url: '/addcard/:routeId/:tripId/:type',
+    views: {
+      'menuContent':{
+        templateUrl: 'templates/newCard.html',
+        controller: 'AddCardCtrl'
       }
     }
   });

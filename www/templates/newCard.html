@@ -10,6 +10,7 @@
         <input ng-model="description" class="description" type="textarea" placeholder="Enter a Description" required="true">
       </label>
       <ion-checkbox ng-model="addLocation">Add current Location</ion-checkbox>
+      <ion-checkbox ng-model="tweet">Also tweet it</ion-checkbox>
       <ion-item>
         <h2 class="assertive">Add Emotions</h2>
         <p>
@@ -25,9 +26,10 @@
         </p>
       </ion-item>
   </div>
-  <button ng-click="post(title, description, addLocation)" class="button button-assertive button-full">
+  <button ng-click="post(title, description, addLocation, tweet)" class="button button-assertive button-full">
     Post
   </button>
+  <ion-spinner style="margin-left: 47vw;" ng-if="sending" icon="android"></ion-spinner>
   <img id="myImage" src="">
   </ion-content>
   <div class="bar bar-footer bar-royal">

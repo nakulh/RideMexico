@@ -1,5 +1,6 @@
 var app = angular.module('User.controllers', ['chart.js']);
-app.controller('UserCtrl', function($scope, $ionicPopup){
+app.controller('UserCtrl', function($scope, $ionicPopup, $cordovaToast){
+
   var registered = function() {
      var alertPopup = $ionicPopup.alert({
        title: 'Registeration Complete',
@@ -14,18 +15,15 @@ app.controller('UserCtrl', function($scope, $ionicPopup){
       title: 'Watch your inputs!',
       template: msg
     });
-   alertPopup.then(function(res) {
+   /*alertPopup.then(function(res) {
      console.log('Thank you for not eating my delicious ice cream cone');
-   });
+   });*/
   };
   var signedOut = function(msg){
     var alertPopup = $ionicPopup.alert({
       title: 'Success',
       template: 'You have signed out'
     });
-   alertPopup.then(function(res) {
-     console.log('Thank you for not eating my delicious ice cream cone');
-   });
   };
   var createUserInDb = function(id, fullname){
     firebase.database().ref('users/' + id).set({
@@ -53,6 +51,11 @@ app.controller('UserCtrl', function($scope, $ionicPopup){
       $scope.user = firebase.auth().currentUser;
       $scope.vid = true;
       $scope.$apply();
+      $cordovaToast.showLongBottom('Logged In').then(function(success) {
+      // success
+      }, function (error) {
+        // error
+      });
     })
     .catch(function(error) {
       formError(error.message);

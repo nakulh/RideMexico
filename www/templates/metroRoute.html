@@ -17,14 +17,13 @@
     </ion-tab>
 
     <ion-tab title="Timing" icon-on="ion-android-time" icon-off="ion-ios-clock-outline">
+      <ion-item><h1>MetroRoute</h1></ion-item>
+      <p>{{route.route_desc}}</p>
       <ion-content class="padding-top">
-        <p>{{route.route_desc}}</p>
         <ion-list>
-          <ion-item><h1>MetroRoute</h1></ion-item>
-
           <ion-item class="item-divider">
               {{tripb[1].trip_desc}}
-              <h5 class="assertive">Total route time: {{routeTime}}</h5>
+              <h5 class="royal">Total route time: {{routeTime}}</h5>
           </ion-item>
           <ion-item class="item-divider">
             <button class="button button-small button-outline button-balanced">
@@ -46,10 +45,10 @@
           <ion-item>
             <div class="row">
               <div class="col col-50">
-                <h3 class="assertive">Time<h3>
+                <h3 class="royal">Time<h3>
               </div>
               <div class="col col-50">
-                <h3 class="assertive">Frequency</h3>
+                <h3 class="royal">Frequency</h3>
               </div>
             </div>
           </ion-item>
@@ -91,10 +90,10 @@
           <ion-item>
             <div class="row">
               <div class="col col-50">
-                <h3 class="assertive">Time<h3>
+                <h3 class="royal">Time<h3>
               </div>
               <div class="col col-50">
-                <h3 class="assertive">Frequency</h3>
+                <h3 class="royal">Frequency</h3>
               </div>
             </div>
           </ion-item>
@@ -116,10 +115,10 @@
           <ion-item>
             <div class="row">
               <div class="col col-50">
-                <h3 class="assertive">Time<h3>
+                <h3 class="royal">Time<h3>
               </div>
               <div class="col col-50">
-                <h3 class="assertive">Frequency</h3>
+                <h3 class="royal">Frequency</h3>
               </div>
             </div>
           </ion-item>
@@ -138,7 +137,8 @@
     </ion-tab>
 
     <ion-tab title="Map" icon-on="ion-android-map" icon-off="ion-android-map">
-      <ng-map ng-if="google" zoom="11" center={{shapeCenter}}>
+      <!--<p class="noMap" ng-if="!online">No internet connection</p>-->
+      <ng-map zoom="11" center={{shapeCenter}}>
         <shape id="polyline" name="polyline"
           geodesic="true" stroke-color="#FF0000"
           stroke-opacity="1.0" stroke-weight="3"
@@ -150,39 +150,37 @@
     <ion-tab title="Community" icon-on="ion-android-people" icon-off="ion-android-people">
       <h1>f</h1>
       <ion-content>
-        <div class="row action-buttons">
+        <div class="row action-buttons" ng-if="tags">
           <div class="col col-50">
             <button ng-click="tagsEdit('late')" class="button button-energized button-block button-outline">
-              <!--<img src="img/emotions/late.png" height="28px" width="28px" class="button-image">-->Late
+                Late
                 <span class="badge badge-energized">{{tags.late}}
                 </span>
             </button>
           </div>
-          <div class="col col-50">
-            <button ng-click="tagsEdit('conjusted')" class="button button-royal button-block button-outline">
-              <!--<img src="img/emotions/conjusted.png" height="28px" width="28px" class="button-image" style="margin-left:-23px;">-->
-              <span style="margin-right:7px;">
-              </span>
-              Conjusted
-              <span class="badge badge-royal">
-                {{tags.conjusted}}
-              </span>
-            </button>
-          </div>
-        </div>
-        <div class="row action-buttons">
           <div class="col">
             <button ng-click="tagsEdit('like')" class="button button-assertive button-outline button-block icon-left ion-heart">{{tags.like}}</button>
           </div>
-          <div class="col col-67">
+        </div>
+        <div class="row action-buttons" ng-if="tags">
+          <div class="col">
             <button ng-click="tagsEdit('unmaintained')" class="button button-dark button-block button-outline">
-              <!--<img src="img/emotions/unmaintained.png" height="28px" width="28px" class="button-image">-->Unmaintained
+              Unmaintained
               <span class="badge badge-dark">{{tags.unmaintained}}
               </span>
             </button>
           </div>
+          <div class="col">
+            <button ng-click="tagsEdit('conjusted')" class="button button-royal button-block button-outline">
+              <span style="margin-right:7px;">
+              </span>
+              Conjusted
+              <span class="badge badge-royal">{{tags.conjusted}}
+              </span>
+            </button>
+          </div>
         </div>
-        <div class="row action-buttons">
+        <div class="row action-buttons" ng-if="tags">
           <div class="col">
             <button ng-click="addCard($event)" class="button button-block button-outline button-balanced">Add A Card</button>
           </div>
@@ -199,28 +197,12 @@
             </p>
             <p>
               <a ng-click="likeCard($index)" class="subdued">{{card.likes}} Likes</a>
-              <!--<a ng-click="comments($event)" class="subdued">5 Replies</a>-->
               <img ng-repeat="emoImg in card.emoImg track by $index" src={{emoImg}} height="30" width="30">
             </p>
           </div>
         </div>
-        <div class="list card">
-          <div class="item">
-            <h2>Maurya the prick</h2>
-            <p>24/6/2107</p>
-          </div>
-          <div class="item item-body">
-            <img height="150px" width="180px" ng-if="card.imageData" class="full-image" src={{card.imageData}}>
-            <p>
-              Maurya is a godamn prick
-            </p>
-            <p>
-              <a ng-click="likeCard($index)" class="subdued">5 Likes</a>
-              <img src="img/emotions/angry.png" height="30" width="30">
-              <img src="img/emotions/dislike.png" height="30" width="30">
-            </p>
-          </div>
-        </div>
+        <ion-spinner ng-if="loadingCards" icon="android" style="margin-left: 46vw;"></ion-spinner>
+        <p ng-if="cards.length < 1" style="text-align: center;">No Cards To Show</p>
       </ion-content>
     </ion-tab>
 

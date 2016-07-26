@@ -28,7 +28,16 @@
     {
       "locator": "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
       "id": "cordova-plugin-x-toast"
-    }
+    },
+    {
+      "locator": "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git",
+      "id": "cordova-plugin-x-socialsharing"
+    },
+    {
+      "locator": "https://github.com/Telerik-Verified-Plugins/Toast",
+      "id": "nl.x-services.plugins.toast"
+    },
+    "uk.co.workingedge.phonegap.plugin.launchnavigator"
   ],
   "cordovaPlatforms": [
     "android"

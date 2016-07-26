@@ -86,6 +86,49 @@ module.exports = [
         "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
         "id": "cordova-plugin-geolocation.PositionError",
         "runs": true
+    },
+    {
+        "file": "plugins/cordova-plugin-network-information/www/network.js",
+        "id": "cordova-plugin-network-information.network",
+        "clobbers": [
+            "navigator.connection",
+            "navigator.network.connection"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+        "id": "cordova-plugin-network-information.Connection",
+        "clobbers": [
+            "Connection"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-x-socialsharing/www/SocialSharing.js",
+        "id": "cordova-plugin-x-socialsharing.SocialSharing",
+        "clobbers": [
+            "window.plugins.socialsharing"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-actionsheet/www/ActionSheet.js",
+        "id": "cordova-plugin-actionsheet.ActionSheet",
+        "clobbers": [
+            "window.plugins.actionsheet"
+        ]
+    },
+    {
+        "file": "plugins/uk.co.workingedge.phonegap.plugin.launchnavigator/www/common.js",
+        "id": "uk.co.workingedge.phonegap.plugin.launchnavigator.Common",
+        "clobbers": [
+            "launchnavigator"
+        ]
+    },
+    {
+        "file": "plugins/uk.co.workingedge.phonegap.plugin.launchnavigator/www/android/launchnavigator.js",
+        "id": "uk.co.workingedge.phonegap.plugin.launchnavigator.LaunchNavigator",
+        "merges": [
+            "launchnavigator"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -101,7 +144,11 @@ module.exports.metadata =
     "cordova-plugin-x-toast": "2.5.2",
     "cordova-plugin-compat": "1.0.0",
     "cordova-plugin-camera": "2.2.0",
-    "cordova-plugin-geolocation": "2.2.0"
+    "cordova-plugin-geolocation": "2.2.0",
+    "cordova-plugin-network-information": "1.2.1",
+    "cordova-plugin-x-socialsharing": "5.1.2",
+    "cordova-plugin-actionsheet": "2.2.2",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "3.1.1"
 };
 // BOTTOM OF METADATA
 });

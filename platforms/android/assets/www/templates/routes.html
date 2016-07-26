@@ -1,9 +1,16 @@
 <ion-view view-title="Routes List">
+  <div class="bar bar-subheader">
+    <label class="item-input-inset">
+      <i class="icon ion-ios-search placeholder-icon"></i>
+      <input type="search" placeholder="Search" ng-model="search.route_long_name">
+    </label>
+  </div>
   <ion-content>
+    <h1>Search</h1>
     <ion-list>
-      <ion-item href="#/app/database/{{routeType}}/{{route.route_id}}" ng-repeat="route in busRoutes">
+      <ion-item href="#/app/database/{{routeType}}/{{route.route_id}}" ng-repeat="route in busRoutes | filter: search">
         <h2>{{route.route_long_name}}</h2>
-        <h6 class="assertive">Route: {{route.route_short_name}}</h6>
+        <h6 class="positive">Route: {{route.route_short_name}}</h6>
         <p>{{route.route_desc}}</p>
       </ion-item>
     </ion-list>

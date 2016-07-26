@@ -13,8 +13,6 @@ var app = angular.module('RideMexico',
    'ngMap',
    'Map.controllers',
    'addCard.controller'
-   //'Search.controllers',
-   //'Personal.controllers'
   ])
 
 .run(function($ionicPlatform) {
@@ -56,10 +54,10 @@ var app = angular.module('RideMexico',
     url: '/database',
     views: {
       'menuContent': {
-        templateUrl: 'templates/database.html'
+        templateUrl: 'templates/database.html',
+        controller: 'DatabaseMenuCtrl'
       }
-    },
-    controller: 'DatabaseMenuCtrl'
+    }
   })
 
   .state('app.search', {
@@ -116,6 +114,15 @@ var app = angular.module('RideMexico',
       'menuContent':{
         templateUrl: 'templates/routes.html',
         controller: 'MetroRoutesListController'
+      }
+    }
+  })
+  .state('app.carrotMap', {
+    url: '/database/carrotMap',
+    views: {
+      'menuContent':{
+        templateUrl: 'templates/carrotMap.html',
+        controller: 'carrotMapCtrl'
       }
     }
   })

@@ -1,5 +1,5 @@
 var app = angular.module('Map.controllers', ['Map.services']);
-app.controller('MapController', function($scope, MapService, NgMap, $cordovaToast, $http, $ionicPopup){
+app.controller('MapController', function($scope, MapService, NgMap, $cordovaToast, $http, $ionicPopup, $rootScope){
   NgMap.getMap().then(function(map) {
     $scope.dist = 100;
     $scope.Dist = $scope.dist;
@@ -21,7 +21,8 @@ app.controller('MapController', function($scope, MapService, NgMap, $cordovaToas
     var tripTypeDir = {
       "1": "metro",
       "2": "train",
-      "3": "bus"
+      "3": "bus",
+      "800": "bus"
     };
     var shuffleColours = function shuffleArray(array) {
         for (var i = array.length - 1; i > 0; i--) {
@@ -89,11 +90,11 @@ app.controller('MapController', function($scope, MapService, NgMap, $cordovaToas
       //Get the full routes info
       MapService.getRoutes(lat, lon, $scope.dist, $scope.bus, $scope.train, $scope.metro).then(function(data){
         if(!data){
-          /*$cordovaToast
-            .show('No stops nearby', 'long', 'center')
-            .then(function(success) {
-            }, function (error) {
-            });*/
+          $cordovaToast.showLongBottom('No routes nearby').then(function(success) {
+          // success
+          }, function (error) {
+            // error
+          });
           $scope.markerAnimation = false;
         }
         else{
@@ -144,6 +145,13 @@ app.controller('MapController', function($scope, MapService, NgMap, $cordovaToas
 
           $scope.markerAnimation = false;
           $scope.img = "dyMap.png";
+          if($scope.tripType.length < 1){
+            $cordovaToast.showLongBottom('No routes nearby').then(function(success) {
+            // success
+            }, function (error) {
+              // error
+            });
+          }
         }
       }, function(err){
         console.log(err);

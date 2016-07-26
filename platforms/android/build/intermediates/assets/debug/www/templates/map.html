@@ -9,6 +9,7 @@
   </ul>
   <img src="img/{{img}}" class="map-pointer" ng-if="status" ng-class="{'animate-marker': markerAnimation}">
     <ion-tab title="Map" icon-on="ion-android-map" icon-off="ion-android-map"  on-select="shower()" on-deselect="hider()">
+      <!--<p ng-if="!online">No internet connection</p>-->
       <ng-map zoom="14" center="[19.669948192592543, -99.17607307434082]">
         <shape ng-if="shapes.length > 0" ng-repeat="shape in shapes track by $index" id="polyline" name="polyline"
           geodesic="true" stroke-color={{shape.colour}}

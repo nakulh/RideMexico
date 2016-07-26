@@ -1,5 +1,5 @@
 var app = angular.module('addCard.controller', []);
-app.controller('AddCardCtrl', function($scope, $cordovaCamera, $stateParams, $ionicPopup, $cordovaGeolocation){
+app.controller('AddCardCtrl', function($scope, $cordovaCamera, $stateParams, $ionicPopup, $cordovaGeolocation, $cordovaSocialSharing, $cordovaToast){
   $scope.emotion = {
     confused: 0,
     question:  0,
@@ -11,6 +11,7 @@ app.controller('AddCardCtrl', function($scope, $cordovaCamera, $stateParams, $io
     sad: 0,
     dislike: 0
   };
+  $scope.sending = false;
   var imageBase64 = "";
   $scope.description = "";
   $scope.title = "";
@@ -24,8 +25,8 @@ app.controller('AddCardCtrl', function($scope, $cordovaCamera, $stateParams, $io
       library: Camera.PictureSourceType.PHOTOLIBRARY
     };
     var options = {
-      quality: 50,
-      destinationType: Camera.DestinationType.FILE_URI,
+      quality: 40,
+      destinationType: Camera.DestinationType.DATA_URL,
       sourceType: sources[source],
       allowEdit: true,
       encodingType: Camera.EncodingType.JPEG,
@@ -36,9 +37,10 @@ app.controller('AddCardCtrl', function($scope, $cordovaCamera, $stateParams, $io
 	    correctOrientation:true
     };
     $cordovaCamera.getPicture(options).then(function(imageData) {
-      var image = document.getElementById('myImage');
-      image.src = "data:image/jpeg;base64," + imageData;
       imageBase64 = imageData;
+      $cordovaToast.showLongBottom('Image Added').then(function(success) {
+      }, function (error) {
+      });
     }, function(err) {
       console.log("i cant");
     });
@@ -55,10 +57,9 @@ app.controller('AddCardCtrl', function($scope, $cordovaCamera, $stateParams, $io
       template: 'Posting Without Location'
     });
   };
-  var newCardUpdate = function(cardData, user){
+  var newCardUpdate = function(cardData, user, tweet){
     var newPostKey = firebase.database().ref().child('cards').push().key;
     var updates = {};
-    console.log("2....");
     updates['/users/' + user.uid + '/posts/' + newPostKey] = cardData;
     updates['/cards/' + $stateParams.type + '/' + $stateParams.routeId + '/' + $stateParams.tripId + '/' + newPostKey] = cardData;
     if(imageBase64.length > 1){
@@ -66,10 +67,29 @@ app.controller('AddCardCtrl', function($scope, $cordovaCamera, $stateParams, $io
       updates['/cards/images/' + newPostKey] = imageBase64;
     }
     firebase.database().ref().update(updates).then(function(done){
+      $scope.sending = false;
       postedAlert();
+      if(tweet){
+        $cordovaSocialSharing
+          .shareViaTwitter(cardData.description, cardData.image)
+          .then(function(result) {
+            $cordovaToast.showLongBottom('Shared via Twitter').then(function(success) {
+            // success
+            }, function (error) {
+              // error
+            });
+          }, function(err) {
+            $cordovaToast.showLongBottom('Some error occured with Twitter').then(function(success) {
+            // success
+            }, function (error) {
+              // error
+            });
+          });
+      }
     });
   };
-  $scope.post = function(title, description, addLocation){
+  $scope.post = function(title, description, addLocation, tweet){
+    $scope.sending = true;
     $scope.title = title;
     $scope.description = description;
     if($stateParams.tripId == "x")
@@ -88,10 +108,9 @@ app.controller('AddCardCtrl', function($scope, $cordovaCamera, $stateParams, $io
       likes: 0,
       comments: {} // | date:'yyyy-MM-dd HH:mm:ss Z'
     };
-    console.log("....");
     if(addLocation){
       console.log("getting location");
-      var posOptions = {timeout: 5000, enableHighAccuracy: false};
+      var posOptions = {timeout: 10000, enableHighAccuracy: false};
       $cordovaGeolocation
         .getCurrentPosition(posOptions)
         .then(function (position) {
@@ -99,15 +118,14 @@ app.controller('AddCardCtrl', function($scope, $cordovaCamera, $stateParams, $io
           cardData.location.lat  = position.coords.latitude;
           cardData.location.lon = position.coords.longitude;
           console.log(position);
-          newCardUpdate(cardData, user);
+          newCardUpdate(cardData, user, tweet);
         }, function(err) {
           noLocation();
-          newCardUpdate(cardData, user);
-          console.log("no location");
+          newCardUpdate(cardData, user, tweet);
         });
     }
     else{
-      newCardUpdate(cardData, user);
+      newCardUpdate(cardData, user, tweet);
     }
   };
 });

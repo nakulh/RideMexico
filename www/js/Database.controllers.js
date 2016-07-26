@@ -1,6 +1,13 @@
-var app = angular.module('Database.controllers', ['routes.services', 'Card.service']);
+var app = angular.module('Database.controllers', ['routes.services']);
 
-app.controller('DatabaseMenuCtrl', function($scope, RoutesService){
+app.controller('DatabaseMenuCtrl', function($scope, RoutesService, $cordovaToast){
+  $scope.clk = function(){
+    $cordovaToast.showLongBottom('Here is a message').then(function(success) {
+    // success
+    }, function (error) {
+      // error
+    });
+  };
   $scope.bus = false;
   $scope.train = false;
   $scope.metro = false;
@@ -109,142 +116,16 @@ app.controller('MetroRoutesListController', function($scope, RoutesService){
   });
 });
 
-app.controller('MetroRouteController', function($scope, MetroTrainRouteService, $stateParams, $ionicPopup, $location, $ionicPopover){
-  var cardKeys = [];
-  $scope.cards = [];
-  firebase.database().ref('/metro/'+ $stateParams.routeId + '/tags/').once('value').then(function(value) {
-    $scope.tags = {};
-    if(value.val() === null){
-      $scope.tags.conjusted = 0;
-      $scope.tags.like = 0;
-      $scope.tags.late = 0;
-      $scope.tags.unmaintained = 0;
-    }
-    else{
-      $scope.tags = value.val();
-    }
-    if(!$scope.tags.conjusted){
-      $scope.tags.conjusted = 0;
-    }
-    if(!$scope.tags.like){
-      $scope.tags.like = 0;
-    }
-    if(!$scope.tags.late){
-      $scope.tags.late = 0;
-    }
-    if(!$scope.tags.unmaintained){
-      $scope.tags.unmaintained = 0;
-    }
-    $scope.$apply();
-    console.log($scope.tags);
-  });
-  $scope.tagsEdit = function(tag){
-    console.log(tag);
-    var user = firebase.auth().currentUser;
-    firebase.database().ref('/users/' + user.uid + '/metro/' + tag + '/' + $stateParams.routeId).once('value').then(function(tagInfo){
-      if(!tagInfo.val()){
-        firebase.database().ref('/metro/'+ $stateParams.routeId + '/tags/' + tag).once('value').then(function(value) {
-          var updates = {};
-          var newValue = 1;
-          console.log(value.val());
-          if(value.val() !== null){
-            newValue = value.val() + 1;
-          }
-          updates['/metro/' + $stateParams.routeId + '/tags/' + tag] = newValue;
-          firebase.database().ref().update(updates).then(function(done){
-            console.log(newValue);
-            updates = {};
-            updates['/users/' + user.uid + '/metro/' + tag + '/' + $stateParams.routeId] = true;
-            firebase.database().ref().update(updates).then(function(done){
-              $scope.tags[tag] = $scope.tags[tag] + 1;
-              $scope.$apply();
-            });
-          });
-        });
-      }
-    });
-  };
-  //Retrive Card Data from Server
-  //Retrive images
-  var getImage = function(x){
-    if($scope.cards[x].image){
-      var currKey = cardKeys[x];
-      console.log(currKey);
-      firebase.database().ref('/cards/images/'+ currKey).once('value').then(function(imgData){
-        $scope.cards[x].imageData = "data:image/jpeg;base64," + imgData.val();
-      });
-    }
-  };
-  firebase.database().ref('/cards/metro/'+ $stateParams.routeId + "/").once('value').then(function(cards) {
-    console.log(cards.val());
-    for (var key in cards.val()) {
-      if (cards.val().hasOwnProperty(key)) {
-        $scope.cards.push(cards.val()[key]);
-        cardKeys.push(key);
-        $scope.cards[$scope.cards.length - 1].emoImg = [];
-        var emotionsArr = ['angry', 'confused', 'dislike', 'happy', 'hurt', 'like', 'question', 'sad', 'vomit'];
-        var emoDir = {
-          angry: 'img/emotions/angry.png',
-          confused: 'img/emotions/confused.png',
-          dislike: 'img/emotions/dislike.png',
-          happy: 'img/emotions/happy.png',
-          hurt: 'img/emotions/hurt.png',
-          like: 'img/emotions/like.png',
-          question: 'img/emotions/question.png',
-          sad: 'img/emotions/sad.png',
-          vomit: 'img/emotions/vomit.png'
-        };
-        for(var emo in emotionsArr){
-          if($scope.cards[$scope.cards.length - 1].emotions[emotionsArr[emo]]){
-            $scope.cards[$scope.cards.length - 1].emoImg.push(emoDir[emotionsArr[emo]]);
-          }
-        }
-      }
-    }
-    for(var y = 0; y < $scope.cards.length; y++){
-      //getImage(y);
-    }
-  //  $scope.$apply();
-  });
-
-  //Like A Card
-  $scope.likeCard = function(indx){
-    var currKey = cardKeys[indx];
-    var user = firebase.auth().currentUser;
-    firebase.database().ref('/users/'+ user.uid + "/likes/" + currKey).once('value').then(function(like) {
-      if(!like.val()){
-        var update = {};
-        update['/users/'+ user.uid + "/likes/" + currKey] = {value: true};
-        firebase.database().ref().update(update).then(function(done){
-          update = {};
-          var l = ++$scope.cards[indx].likes;
-          console.log($scope.cards[indx]);
-          update['/cards/metro/' + $stateParams.routeId + '/' + currKey + '/likes'] = l;
-          firebase.database().ref().update(update).then(function(done){
-            console.log("liked");
-            $scope.$apply();
-          });
-        });
-      }
-    });
-  };
-
-  //Comment on Card
-  /*var template = '<ion-popover-view><ion-header-bar> <div class="item item-input-inset"><label class="item-input-wrapper"><input type="text" ng-model="commentStr" style="width: 125px;" placeholder="Comment"></label><button ng-click="sendComment(commentStr)" class="button button-small">Send</button></div></ion-header-bar> <ion-content> <ion-list> <ion-item><h4 class="assertive">Maurya The Prick</h4><p>Its Maurya the prick OMG Lo</p><p>jhb skdjb skdjb ksjbd</p></ion-item> </ion-list>  </ion-content></ion-popover-view>';
-  $scope.popover = $ionicPopover.fromTemplate(template, {
-    scope: $scope
-  });
-  $scope.comments = function($event) {
-    $scope.popover.show($event);
-  };
-  $scope.sendComment = function(comment){
-
-    firebase.database.ref().update(update).then(function(done){
-
-    });
-  };*/
-  $scope.$on('$destroy', function() {
-    $scope.popover.remove();
+app.controller('MetroRouteController', function($scope, MetroTrainRouteService, $stateParams, $ionicPopup, $location, $ionicPopover, $ionicLoading, $timeout){
+  /*$scope.online = false;
+  if($cordovaNetwork.isOnline()){
+    $scope.online = true;
+  }
+  else{
+    $scope.online = false;
+  }*/
+  $ionicLoading.show({
+      template: 'Loading...'
   });
   MetroTrainRouteService.getRouteDetails($stateParams.routeId).then(function success(data){
     var routesSeg1 = [];
@@ -317,7 +198,7 @@ app.controller('MetroRouteController', function($scope, MetroTrainRouteService, 
       stopMap = $scope.stops[x].stop_lat + "," + $scope.stops[x].stop_lon;
       $scope.stopsMap.push(stopMap);
     }
-
+    $ionicLoading.hide();
     //This Part Handles the add card function
     var notLoggedIn = function(){
       var alertPopup = $ionicPopup.alert({
@@ -325,18 +206,143 @@ app.controller('MetroRouteController', function($scope, MetroTrainRouteService, 
         template: 'You must be logged in to use this function'
       });
     };
-    $scope.addCard = function($event) {
-       if (firebase.auth().currentUser) {
-          var path = "/app/addcard/" + $stateParams.routeId + "/x/" + "metro";
-          $location.path(path);
-        } else {
-          notLoggedIn();
-        }
-    };
-
   }, function(err){
     console.log(err);
   });
+  $scope.loadingCards = true;
+  var cardKeys = [];
+  $scope.cards = [];
+  firebase.database().ref('/metro/'+ $stateParams.routeId + '/tags/').once('value').then(function(value) {
+    console.log(value.val());
+    $scope.tags = {};
+    if(value.val() === null){
+      $scope.tags.conjusted = 0;
+      $scope.tags.like = 0;
+      $scope.tags.late = 0;
+      $scope.tags.unmaintained = 0;
+    }
+    else{
+      $scope.tags = value.val();
+    }
+    if(!$scope.tags.conjusted){
+      $scope.tags.conjusted = 0;
+    }
+    if(!$scope.tags.like){
+      $scope.tags.like = 0;
+    }
+    if(!$scope.tags.late){
+      $scope.tags.late = 0;
+    }
+    if(!$scope.tags.unmaintained){
+      $scope.tags.unmaintained = 0;
+    }
+    $scope.$apply();
+    console.log($scope.tags);
+  }, function(err){
+    console.log(err);
+    console.log("no net");
+  });
+  $scope.tagsEdit = function(tag){
+    console.log(tag);
+    var user = firebase.auth().currentUser;
+    firebase.database().ref('/users/' + user.uid + '/metro/' + tag + '/' + $stateParams.routeId).once('value').then(function(tagInfo){
+      if(!tagInfo.val()){
+        firebase.database().ref('/metro/'+ $stateParams.routeId + '/tags/' + tag).once('value').then(function(value) {
+          var updates = {};
+          var newValue = 1;
+          console.log(value.val());
+          if(value.val() !== null){
+            newValue = value.val() + 1;
+          }
+          updates['/metro/' + $stateParams.routeId + '/tags/' + tag] = newValue;
+          firebase.database().ref().update(updates).then(function(done){
+            console.log(newValue);
+            updates = {};
+            updates['/users/' + user.uid + '/metro/' + tag + '/' + $stateParams.routeId] = true;
+            firebase.database().ref().update(updates).then(function(done){
+              $scope.tags[tag] = $scope.tags[tag] + 1;
+              $scope.$apply();
+            });
+          });
+        });
+      }
+    });
+  };
+  //Retrive Card Data from Server
+  //Retrive images
+  var getImage = function(x){
+    if($scope.cards[x].image){
+      var currKey = cardKeys[x];
+      console.log(currKey);
+      firebase.database().ref('/cards/images/'+ currKey).once('value').then(function(imgData){
+        $scope.cards[x].imageData = "data:image/jpeg;base64," + imgData.val();
+        console.log(imgData.val());
+      });
+    }
+  };
+  firebase.database().ref('/cards/metro/'+ $stateParams.routeId + "/").once('value').then(function(cards) {
+    console.log(cards.val());
+    for (var key in cards.val()) {
+      if (cards.val().hasOwnProperty(key)) {
+        $scope.cards.push(cards.val()[key]);
+        cardKeys.push(key);
+        $scope.cards[$scope.cards.length - 1].emoImg = [];
+        var emotionsArr = ['angry', 'confused', 'dislike', 'happy', 'hurt', 'like', 'question', 'sad', 'vomit'];
+        var emoDir = {
+          angry: 'img/emotions/angry.png',
+          confused: 'img/emotions/confused.png',
+          dislike: 'img/emotions/dislike.png',
+          happy: 'img/emotions/happy.png',
+          hurt: 'img/emotions/hurt.png',
+          like: 'img/emotions/like.png',
+          question: 'img/emotions/question.png',
+          sad: 'img/emotions/sad.png',
+          vomit: 'img/emotions/vomit.png'
+        };
+        $scope.loadingCards = false;
+        for(var emo in emotionsArr){
+          if($scope.cards[$scope.cards.length - 1].emotions[emotionsArr[emo]])
+            $scope.cards[$scope.cards.length - 1].emoImg.push(emoDir[emotionsArr[emo]]);
+        }
+        $scope.$apply();
+      }
+    }
+    for(var y = 0; y < $scope.cards.length; y++){
+      getImage(y);
+    }
+    $scope.$apply();
+  });
+
+  //Like A Card
+  $scope.likeCard = function(indx){
+    var currKey = cardKeys[indx];
+    var user = firebase.auth().currentUser;
+    firebase.database().ref('/users/'+ user.uid + "/likes/" + currKey).once('value').then(function(like) {
+      if(!like.val()){
+        var update = {};
+        update['/users/'+ user.uid + "/likes/" + currKey] = {value: true};
+        firebase.database().ref().update(update).then(function(done){
+          update = {};
+          var l = ++$scope.cards[indx].likes;
+          console.log($scope.cards[indx]);
+          update['/cards/metro/' + $stateParams.routeId + '/' + currKey + '/likes'] = l;
+          firebase.database().ref().update(update).then(function(done){
+            console.log("liked");
+            $scope.$apply();
+          });
+        });
+      }
+    });
+  };
+  $scope.addCard = function($event) {
+     if (firebase.auth().currentUser) {
+        var path = "/app/addcard/" + $stateParams.routeId + "/x/" + "metro";
+        $location.path(path);
+      } else {
+        notLoggedIn();
+      }
+  };
+  $timeout(function(){$scope.loadingCards = false;}, 15000);
 });
 
 app.controller('StopMapController', function($scope, $stateParams, $ionicPopup){
@@ -355,7 +361,10 @@ app.controller('StopMapController', function($scope, $stateParams, $ionicPopup){
  };
 });
 
-app.controller('TrainRouteController', function($scope, MetroTrainRouteService, $stateParams, $location){
+app.controller('TrainRouteController', function($scope, MetroTrainRouteService, $stateParams, $location, $timeout, $ionicLoading){
+  $ionicLoading.show({
+      template: 'Loading...'
+  });
   MetroTrainRouteService.getRouteDetails($stateParams.routeId).then(function success(data){
     $scope.cont = false;
     var routesSeg1 = [];
@@ -432,7 +441,7 @@ app.controller('TrainRouteController', function($scope, MetroTrainRouteService, 
         template: 'You must be logged in to use this function'
       });
     };
-
+    $ionicLoading.hide();
     $scope.addCard = function($event) {
        if (firebase.auth().currentUser) {
           var path = "/app/addcard/" + $stateParams.routeId + "/x/" + "train";
@@ -458,6 +467,124 @@ app.controller('TrainRouteController', function($scope, MetroTrainRouteService, 
   }, function(err){
     console.log(err);
   });
+  var cardKeys = [];
+  $scope.cards = [];
+  firebase.database().ref('/train/'+ $stateParams.routeId + '/tags/').once('value').then(function(value) {
+    $scope.tags = {};
+    if(value.val() === null){
+      $scope.tags.conjusted = 0;
+      $scope.tags.like = 0;
+      $scope.tags.late = 0;
+      $scope.tags.unmaintained = 0;
+    }
+    else{
+      $scope.tags = value.val();
+    }
+    if(!$scope.tags.conjusted){
+      $scope.tags.conjusted = 0;
+    }
+    if(!$scope.tags.like){
+      $scope.tags.like = 0;
+    }
+    if(!$scope.tags.late){
+      $scope.tags.late = 0;
+    }
+    if(!$scope.tags.unmaintained){
+      $scope.tags.unmaintained = 0;
+    }
+    $scope.$apply();
+    console.log($scope.tags);
+  });
+  $scope.tagsEdit = function(tag){
+    console.log(tag);
+    var user = firebase.auth().currentUser;
+    firebase.database().ref('/users/' + user.uid + '/train/' + tag + '/' + $stateParams.routeId).once('value').then(function(tagInfo){
+      if(!tagInfo.val()){
+        firebase.database().ref('/train/'+ $stateParams.routeId + '/tags/' + tag).once('value').then(function(value) {
+          var updates = {};
+          var newValue = 1;
+          console.log(value.val());
+          if(value.val() !== null){
+            newValue = value.val() + 1;
+          }
+          updates['/train/' + $stateParams.routeId + '/tags/' + tag] = newValue;
+          firebase.database().ref().update(updates).then(function(done){
+            console.log(newValue);
+            updates = {};
+            updates['/users/' + user.uid + '/train/' + tag + '/' + $stateParams.routeId] = true;
+            firebase.database().ref().update(updates).then(function(done){
+              $scope.tags[tag] = $scope.tags[tag] + 1;
+              $scope.$apply();
+            });
+          });
+        });
+      }
+    });
+  };
+  //Retrive Card Data from Server
+  //Retrive images
+  var getImage = function(x){
+    if($scope.cards[x].image){
+      var currKey = cardKeys[x];
+      console.log(currKey);
+      firebase.database().ref('/cards/images/'+ currKey).once('value').then(function(imgData){
+        $scope.cards[x].imageData = "data:image/jpeg;base64," + imgData.val();
+      });
+    }
+  };
+  firebase.database().ref('/cards/train/'+ $stateParams.routeId + "/").once('value').then(function(cards) {
+    console.log(cards.val());
+    for (var key in cards.val()) {
+      if (cards.val().hasOwnProperty(key)) {
+        $scope.cards.push(cards.val()[key]);
+        cardKeys.push(key);
+        $scope.cards[$scope.cards.length - 1].emoImg = [];
+        var emotionsArr = ['angry', 'confused', 'dislike', 'happy', 'hurt', 'like', 'question', 'sad', 'vomit'];
+        var emoDir = {
+          angry: 'img/emotions/angry.png',
+          confused: 'img/emotions/confused.png',
+          dislike: 'img/emotions/dislike.png',
+          happy: 'img/emotions/happy.png',
+          hurt: 'img/emotions/hurt.png',
+          like: 'img/emotions/like.png',
+          question: 'img/emotions/question.png',
+          sad: 'img/emotions/sad.png',
+          vomit: 'img/emotions/vomit.png'
+        };
+        for(var emo in emotionsArr){
+          if($scope.cards[$scope.cards.length - 1].emotions[emotionsArr[emo]]){
+            $scope.cards[$scope.cards.length - 1].emoImg.push(emoDir[emotionsArr[emo]]);
+          }
+        }
+      }
+    }
+    for(var y = 0; y < $scope.cards.length; y++){
+      getImage(y);
+    }
+    $scope.$apply();
+  });
+
+  $scope.likeCard = function(indx){
+    var currKey = cardKeys[indx];
+    var user = firebase.auth().currentUser;
+    firebase.database().ref('/users/'+ user.uid + "/likes/" + currKey).once('value').then(function(like) {
+      if(!like.val()){
+        var update = {};
+        update['/users/'+ user.uid + "/likes/" + currKey] = {value: true};
+        firebase.database().ref().update(update).then(function(done){
+          update = {};
+          var l = ++$scope.cards[indx].likes;
+          console.log($scope.cards[indx]);
+          update['/cards/train/' + $stateParams.routeId + '/' + currKey + '/likes'] = l;
+          firebase.database().ref().update(update).then(function(done){
+            console.log("liked");
+            $scope.$apply();
+          });
+        });
+      }
+    });
+  };
+  $timeout(function(){$scope.loadingCards = false;}, 15000);
 });
 
 app.controller('BusTripController', function($scope, $stateParams, BusTripService){
@@ -479,7 +606,127 @@ app.controller('BusTripController', function($scope, $stateParams, BusTripServic
   });
 });
 
-app.controller('BusTripRouteController', function($scope, $stateParams, BusTripRouteService, $http, BusTripCalenderService, $location){
+app.controller('BusTripRouteController', function($scope, $stateParams, BusTripRouteService, $http, BusTripCalenderService, $location, $timeout, $ionicLoading){
+  var cardKeys = [];
+  $scope.cards = [];
+  firebase.database().ref('/bus/'+ $stateParams.routeId + '/' + $stateParams.routeId + '/tags/').once('value').then(function(value) {
+    $scope.tags = {};
+    if(value.val() === null){
+      $scope.tags.conjusted = 0;
+      $scope.tags.like = 0;
+      $scope.tags.late = 0;
+      $scope.tags.unmaintained = 0;
+    }
+    else{
+      $scope.tags = value.val();
+    }
+    if(!$scope.tags.conjusted){
+      $scope.tags.conjusted = 0;
+    }
+    if(!$scope.tags.like){
+      $scope.tags.like = 0;
+    }
+    if(!$scope.tags.late){
+      $scope.tags.late = 0;
+    }
+    if(!$scope.tags.unmaintained){
+      $scope.tags.unmaintained = 0;
+    }
+    $scope.$apply();
+    console.log($scope.tags);
+  });
+  $scope.tagsEdit = function(tag){
+    console.log(tag);
+    var user = firebase.auth().currentUser;
+    firebase.database().ref('/users/' + user.uid + '/metro/' + tag + '/' + $stateParams.routeId).once('value').then(function(tagInfo){
+      if(!tagInfo.val()){
+        firebase.database().ref('/bus/'+ $stateParams.routeId + '/' + $stateParams.tripId + '/tags/' + tag).once('value').then(function(value) {
+          var updates = {};
+          var newValue = 1;
+          console.log(value.val());
+          if(value.val() !== null){
+            newValue = value.val() + 1;
+          }
+          updates['/bus/' + $stateParams.routeId + '/' + $stateParams.tripId + '/tags/' + tag] = newValue;
+          firebase.database().ref().update(updates).then(function(done){
+            console.log(newValue);
+            updates = {};
+            updates['/users/' + user.uid + '/bus/' + tag + '/' + $stateParams.routeId  + '/' + $stateParams.tripId] = true;
+            firebase.database().ref().update(updates).then(function(done){
+              $scope.tags[tag] = $scope.tags[tag] + 1;
+              $scope.$apply();
+            });
+          });
+        });
+      }
+    });
+  };
+  //Retrive Card Data from Server
+  //Retrive images
+  var getImage = function(x){
+    if($scope.cards[x].image){
+      var currKey = cardKeys[x];
+      console.log(currKey);
+      firebase.database().ref('/cards/images/'+ currKey).once('value').then(function(imgData){
+        $scope.cards[x].imageData = "data:image/jpeg;base64," + imgData.val();
+      });
+    }
+  };
+  firebase.database().ref('/cards/metro/'+ $stateParams.routeId + "/").once('value').then(function(cards) {
+    console.log(cards.val());
+    for (var key in cards.val()) {
+      if (cards.val().hasOwnProperty(key)) {
+        $scope.cards.push(cards.val()[key]);
+        cardKeys.push(key);
+        $scope.cards[$scope.cards.length - 1].emoImg = [];
+        var emotionsArr = ['angry', 'confused', 'dislike', 'happy', 'hurt', 'like', 'question', 'sad', 'vomit'];
+        var emoDir = {
+          angry: 'img/emotions/angry.png',
+          confused: 'img/emotions/confused.png',
+          dislike: 'img/emotions/dislike.png',
+          happy: 'img/emotions/happy.png',
+          hurt: 'img/emotions/hurt.png',
+          like: 'img/emotions/like.png',
+          question: 'img/emotions/question.png',
+          sad: 'img/emotions/sad.png',
+          vomit: 'img/emotions/vomit.png'
+        };
+        for(var emo in emotionsArr){
+          if($scope.cards[$scope.cards.length - 1].emotions[emotionsArr[emo]]){
+            $scope.cards[$scope.cards.length - 1].emoImg.push(emoDir[emotionsArr[emo]]);
+          }
+        }
+      }
+    }
+    for(var y = 0; y < $scope.cards.length; y++){
+      getImage(y);
+    }
+    $scope.$apply();
+  });
+
+  $scope.likeCard = function(indx){
+    var currKey = cardKeys[indx];
+    var user = firebase.auth().currentUser;
+    firebase.database().ref('/users/'+ user.uid + "/likes/" + currKey).once('value').then(function(like) {
+      if(!like.val()){
+        var update = {};
+        update['/users/'+ user.uid + "/likes/" + currKey] = {value: true};
+        firebase.database().ref().update(update).then(function(done){
+          update = {};
+          var l = ++$scope.cards[indx].likes;
+          console.log($scope.cards[indx]);
+          update['/cards/metro/' + $stateParams.routeId + '/' + currKey + '/likes'] = l;
+          firebase.database().ref().update(update).then(function(done){
+            console.log("liked");
+            $scope.$apply();
+          });
+        });
+      }
+    });
+  };
+  $ionicLoading.show({
+      template: 'Loading...'
+  });
   BusTripRouteService.getRouteDetails($stateParams.tripId).then(function(data){
     $scope.stops = BusTripRouteService.stops;
     $scope.routeTime = BusTripRouteService.routeTime;
@@ -599,7 +846,122 @@ app.controller('BusTripRouteController', function($scope, $stateParams, BusTripR
       });
     });
   };
+  $timeout(function(){$scope.loadingCards = false;}, 15000);
+   $ionicLoading.hide();
   }, function(err){
       console.log(err);
   });
+});
+app.controller('carrotMapCtrl', function($scope, $cordovaGeolocation, $cordovaToast){
+  $scope.center = "[19.350493, -99.163007]";
+  $scope.carrot = [
+    {
+       "lat": 19.350493,
+       "lon": -99.163007,
+       "car": "Nissan March",
+       "img": "nissanmarch.png"
+    },
+    {
+      "lat": 19.3600163,
+      "lon": -99.1725862,
+      "car": "Nissan Leaf",
+      "img": "nissanleaf.png"
+    },
+    {
+      "lat": 19.360181,
+      "lon": -99.172179,
+      "car": "Toyota Prius",
+      "img": "toyotaprius.png"
+    },
+    {
+      "lat": 19.377103,
+      "lon": -99.161829,
+      "car": "Toyota Hiace Cargo",
+      "img": "toyotahiacecargo.png"
+    },
+    {
+      "lat": 19.407543,
+      "lon": -99.169464,
+      "car": "Nissan March",
+      "img": "nissanmarch.png"
+    },
+    {
+      "lat": 19.410842,
+      "lon": -99.175837,
+      "car": "Audi A1",
+      "img": "audia1.png"
+    },
+    {
+      "lat": 19.417637,
+      "lon": -99.178993,
+      "car": "Nissan Leaf",
+      "img": "nissanleaf.png"
+    },
+    {
+      "lat": 19.426289,
+      "lon": -99.178188,
+      "car": "Nissan March",
+      "img": "nissanmarch.png"
+    },
+    {
+      "lat": 19.429691,
+      "lon": -99.162658,
+      "car": "Nissan Leaf",
+      "img": "nissanleaf.png"
+    },
+    {
+      "lat": 19.431674,
+      "lon": -99.165174,
+      "car": "Toyota Prius",
+      "img": "toyotaprius.png"
+    },
+    {
+      "lat": 19.431750,
+      "lon": -99.165076,
+      "car": "Nissan March",
+      "img": "nissanmarch.png"
+    },
+    {
+      "lat": 19.438496,
+      "lon": -99.203745,
+      "car": "Toyota Prius",
+      "img": "toyotaprius.png"
+    },
+    {
+      "lat": 19.441233,
+      "lon": -99.204995,
+      "car": "Nissan March",
+      "img": "nissanmarch.png"
+    },
+    {
+      "lat": 19.442312,
+      "lon": -99.202847,
+      "car": "Toyota Prius",
+      "img": "toyotaprius.png"
+    },
+  ];
+  $scope.stands = [];
+  for(x = 0; x < $scope.carrot.length; x++){
+    var stand = {};
+    stand.coordinates = $scope.carrot[x].lat + ',' + $scope.carrot[x].lon;
+    stand.marker = 'img/cars/' + $scope.carrot[x].img;
+    $scope.stands.push(stand);
+  }
+  $scope.centerChange = function(stand){
+    console.log(stand);
+    $scope.center = '[' + stand.coordinates + ']';
+  };
+  $scope.getDirections = function(station){
+    var posOptions = {timeout: 10000, enableHighAccuracy: false};
+    $cordovaGeolocation
+      .getCurrentPosition(posOptions)
+      .then(function (position) {
+        var source  = [position.coords.latitude, position.coords.longitude];
+        var dest = [station.lat, station.lon];
+        launchnavigator.navigate(dest, source);
+      }, function(err) {
+        $cordovaToast.showLongBottom('Problem with GPS');
+        console.log("location fail");
+      });
+  };
 });
