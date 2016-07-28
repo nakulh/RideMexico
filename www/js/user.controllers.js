@@ -1,23 +1,17 @@
-var app = angular.module('User.controllers', ['chart.js']);
-app.controller('UserCtrl', function($scope, $ionicPopup, $cordovaToast){
+var app = angular.module('User.controllers', ['info.service']);
+app.controller('UserCtrl', function($scope, $ionicPopup, $cordovaToast, infoService){
 
   var registered = function() {
      var alertPopup = $ionicPopup.alert({
        title: 'Registeration Complete',
        template: 'You have been logged in'
      });
-    alertPopup.then(function(res) {
-      console.log('Thank you for not eating my delicious ice cream cone');
-    });
   };
   var formError = function(msg){
     var alertPopup = $ionicPopup.alert({
       title: 'Watch your inputs!',
       template: msg
     });
-   /*alertPopup.then(function(res) {
-     console.log('Thank you for not eating my delicious ice cream cone');
-   });*/
   };
   var signedOut = function(msg){
     var alertPopup = $ionicPopup.alert({
@@ -38,11 +32,24 @@ app.controller('UserCtrl', function($scope, $ionicPopup, $cordovaToast){
   };
 
   firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    $scope.user = user;
-    $scope.vid = true;
-  } else {
-    $scope.vid = false;
+    if (user) {
+      $scope.user = user;
+      $scope.vid = true;
+      uid = user.uid;
+      $scope.username = user.displayName;
+      $scope.gettingLikes = true;
+      infoService.getLikesNumber(uid).then(function(data){
+        $scope.totalLikes = infoService.totalLikes;
+        $scope.gettingLikes = false;
+      });
+      $scope.gettingPosts = true;
+      infoService.getPostsNumber(uid).then(function(data){
+        $scope.totalPosts = infoService.totalPosts;
+        $scope.gettingPosts = false;
+      });
+    }
+    else {
+      $scope.vid = false;
     }
   });
 
@@ -51,11 +58,7 @@ app.controller('UserCtrl', function($scope, $ionicPopup, $cordovaToast){
       $scope.user = firebase.auth().currentUser;
       $scope.vid = true;
       $scope.$apply();
-      $cordovaToast.showLongBottom('Logged In').then(function(success) {
-      // success
-      }, function (error) {
-        // error
-      });
+      $cordovaToast.showLongBottom('Logged In');
     })
     .catch(function(error) {
       formError(error.message);
@@ -88,7 +91,35 @@ app.controller('UserCtrl', function($scope, $ionicPopup, $cordovaToast){
       console.log(err);
     });
   };
-  //ChartJsProvider.setOptions({ colors : [ '#ff66ff', '#79ff4d', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
-  $scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
-  $scope.data = [300, 500, 100];
+  $scope.emailReset = false;
+  $scope.toggleEmailReset = function(){
+    $scope.emailReset = !$scope.emailReset;
+  };
+  $scope.resetEmail = function(email){
+    var user = firebase.auth().currentUser;
+    user.updateEmail(email).then(function() {
+      $cordovaToast.showLongBottom('Email Update Successful!');
+    }, function(error) {
+      console.log(error);
+      $cordovaToast.showLongBottom(error.message);
+    });
+  };
+  $scope.passwordReset = false;
+  $scope.togglePasswordReset = function(){
+    $scope.passwordReset = !$scope.passwordReset;
+  };
+  $scope.resetPassword = function(){
+    var user = firebase.auth().currentUser;
+    var auth = firebase.auth();
+    email = user.email;
+    auth.sendPasswordResetEmail(email).then(function() {
+      $cordovaToast.showLongBottom("Email has been sent").then(function(){
+        $cordovaToast.showLongBottom("Try Logging out and in again");
+      });
+    }, function(error) {
+      $cordovaToast.showLongBottom(error.message).then(function(){
+        $cordovaToast.showLongBottom("Try Logging out and in again");
+      });
+    });
+  };
 });

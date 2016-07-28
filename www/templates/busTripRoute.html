@@ -86,7 +86,6 @@
         <div class="row action-buttons"  ng-if="tags">
           <div class="col">
             <button ng-click="tagsEdit('conjusted')" class="button button-royal button-block button-outline">
-              <!--<img src="img/emotions/conjusted.png" height="28px" width="28px" class="button-image" style="margin-left:-23px;">-->
               <span style="margin-right:7px;">
               </span>
               Conjusted
@@ -97,7 +96,7 @@
           </div>
           <div class="col">
             <button ng-click="tagsEdit('unmaintained')" class="button button-dark button-block button-outline">
-              <!--<img src="img/emotions/unmaintained.png" height="28px" width="28px" class="button-image">-->Unmaintained
+              Unmaintained
               <span class="badge badge-dark">{{tags.unmaintained}}
               </span>
             </button>
@@ -108,40 +107,20 @@
             <button ng-click="addCard($event)" class="button button-block button-outline button-balanced">Add A Card</button>
           </div>
         </div>
-        <div class="list card first">
+        <div ng-repeat="card in cards track by $index" class="list card">
           <div class="item">
-            <h2>King Kong</h2>
-            <p>October 05, 2016</p>
+            <h2>{{card.user}}</h2>
+            <p>{{card.date | date:'dd-MM-yyyy'}}</p>
           </div>
           <div class="item item-body">
+            <img height="150px" width="180px" ng-if="card.imageData" class="full-image" src={{card.imageData}}>
             <p>
-              This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
-              the content is from a card-body consisting of an image and paragraph text.
+              {{card.description}}
             </p>
             <p>
-              <a href="#" class="subdued">1 Like</a>
-              <a href="#" class="subdued">0 Replies</a>
-              <img src="img/emotions/happy.png" height="30" width="30">
-            </p>
-          </div>
-        </div>
-        <div class="list card">
-          <div class="item">
-            <h2>King Kong</h2>
-            <p>October 05, 2016</p>
-          </div>
-          <div class="item item-body">
-            <img class="full-image" src="img/samples/bus1.jpeg">
-            <p>
-              This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
-              the content is from a card-body consisting of an image and paragraph text.
-            </p>
-            <p>
-              <a href="#" class="subdued">1 Like</a>
-              <a href="#" class="subdued">0 Replies</a>
-              <img src="img/emotions/confused.png" height="30" width="30">
-              <img src="img/emotions/question.png" height="30" width="30">
-              <img src="img/emotions/vomit.png" height="30" width="30">
+              <a ng-click="likeCard($index)" class="subdued">{{card.likes}} Likes</a>
+              <!--<a ng-click="comments($event)" class="subdued">5 Replies</a>-->
+              <img ng-repeat="emoImg in card.emoImg track by $index" src={{emoImg}} height="30" width="30">
             </p>
           </div>
         </div>

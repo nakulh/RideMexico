@@ -127,6 +127,7 @@ var app = angular.module('RideMexico',
     }
   })
   .state('app.metroRoute', {
+    cache: false,
     url: '/database/metroRoute/:routeId',
     views: {
       'menuContent':{
@@ -136,6 +137,7 @@ var app = angular.module('RideMexico',
     }
   })
   .state('app.trainRoute', {
+    cache: false,
     url: '/database/trainRoute/:routeId',
     views: {
       'menuContent':{
@@ -172,6 +174,7 @@ var app = angular.module('RideMexico',
     }
   })
   .state('app.BusTripRoute', {
+    cache: false,
     url: '/database/busRoute/:routeId/:tripId',
     views: {
       'menuContent':{

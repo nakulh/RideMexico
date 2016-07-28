@@ -1,7 +1,7 @@
 <ion-view ng-controller="UserCtrl" view-title="Account">
   <ion-nav-title>Account</ion-nav-title>
   <ion-content ng-app="UserCtrl" scroll="false">
-    <video autoplay loop id="bgvid" webkit-playsinline ng-class="{'bright-vid': vid}">
+    <video autoplay loop id="bgvid" webkit-playsinline ng-class="{'bright-vid': !vid}">
         <source src="img/bgVideo.MP4" type="video/mp4">
     </video>
     <h1 ng-if="!user" class="ride-mexico">Ride Mexico</h1>
@@ -49,24 +49,47 @@
     </div>
     <div ng-if="user">
       <h2 class="bg-user username">Username</h2>
-      <div class="bg-user favs">
-        <i class="ion-heart stat-fav"></i><span class="padding stat-fav">4</span>
+      <div class="list card userShadow">
+        <a class="item item-icon-left item-icon-right item-borderless" style="color: #ff66ff;">
+          <i class="icon ion-heart"></i>
+            <h2 style="color: #ff66ff; font-size: 25px; padding-left: 30px;"><ion-spinner ng-if="gettingLikes" icon="android"></ion-spinner>{{totalLikes}}</h2>
+          <i class="icon ion-chevron-right"></i>
+        </a>
+        <a class="item item-icon-right balanced">
+            <h2 class="balanced" style="font-size: 25px; padding-left: 30px;">Cards: {{totalPosts}}<ion-spinner ng-if="gettingPosts" icon="android"></ion-spinner></h2>
+          <i class="icon ion-chevron-right"></i>
+        </a>
       </div>
-      <div class="bg-user cards">
-        <span class="stat-cards">Cards: 4</span>
+      <div class="list card userShadow">
+        <a class="item item-icon-left assertive" ng-click="toggleEmailReset()">
+          <i class="icon ion-android-alert"></i>
+            <h2 class="assertive" style="font-size: 25px; padding-left: 30px;">Reset E-mail</h2>
+        </a>
+        <div class-"list" ng-if="emailReset">
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <input type="text" placeholder="Email" ng-model="newEmail">
+            </label>
+            <button class="button button-small" ng-click="resetEmail(newEmail)">
+              Submit
+            </button>
+          </div>
+        </div>
+        <a class="item item-icon-left assertive" ng-click="togglePasswordReset()">
+          <i class="icon ion-android-alert"></i>
+            <h2 class="assertive" style="font-size: 25px; padding-left: 30px;">Reset Password</h2>
+            <div ng-if="passwordReset">
+              <div class="button-bar bus-button-bar">
+                  <button class="button button-assertive" ng-click="resetPassword()">
+                    Send reset E-mail
+                  </button>
+              </div>
+            </div>
+        </a>
       </div>
-      <div class="bg-user late">
-        <img src="img/emotions/late.png" height="27px" width="27px"><span class="padding stat-late">78</span>
-      </div>
-      <div class="bg-user conjusted">
-        <img src="img/emotions/conjusted.png" height="27px" width="27px"><span class="padding stat-conjusted">0</span>
-      </div>
-      <div class="bg-user unmaintained">
-        <img src="img/emotions/unmaintained.png" height="27px" width="27px"><span class="padding stat-unmaintained">5</span>
-      </div>
-    </div>
-    <div ng-if="user" class="bar bar-footer bar-dark">
-      <div ng-click="logout()" class="title">Logout</div>
     </div>
   </ion-content>
+  <div ng-if="user" class="bar bar-footer bar-dark">
+    <div ng-click="logout()" class="title">Logout</div>
+  </div>
 </ion-view>
