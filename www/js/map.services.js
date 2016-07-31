@@ -86,7 +86,7 @@ app.factory('MapService', function($http, $q){
                     for(x = 0; x < self.trips.length; x++)
                       for(y = 0; y < routes.length; y++)
                         if(routes[y].route_id.trim() == self.trips[x].route_id){
-                          if(routes[y].route_type == "1" && metro || routes[y].route_type == "2" && train || routes[y].route_type == "3" && bus || routes[y].route_type == "800"){
+                          if(routes[y].route_type == "1" && metro || routes[y].route_type == "2" && train || routes[y].route_type == "3" && bus){
                             var id  = routes[y].route_id;
                             if(!selRoutes[id]){
                               self.tripIdsD.push(self.trips[x].trip_id);

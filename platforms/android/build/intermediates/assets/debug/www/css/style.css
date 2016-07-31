@@ -154,7 +154,7 @@ div.login{
    width: 90vw;
    left: 5vw;
    position: absolute;
-   margin-top: 44vh !important;
+   margin-top: 37vh !important;
    border-radius: 5px;
 }
 div.register{
@@ -314,4 +314,14 @@ box-shadow: 0px -1px 4px -1px rgba(0,0,0,1);
   border-left: 0px;
   border-right: 0px;
   border-bottom: 0px;
+}
+.userShadow{
+  -webkit-box-shadow: -1px 7px 21px -1px rgba(0,0,0,0.87);
+-moz-box-shadow: -1px 7px 21px -1px rgba(0,0,0,0.87);
+box-shadow: -1px 7px 21px -1px rgba(0,0,0,0.87);
+}
+.userSettingsShadow{
+  -webkit-box-shadow: inset -1px 0px 25px -1px rgba(0,0,0,0.75) !important;
+-moz-box-shadow: inset -1px 0px 25px -1px rgba(0,0,0,0.75);
+box-shadow: inset -1px 0px 25px -1px rgba(0,0,0,0.75) !important;
 }

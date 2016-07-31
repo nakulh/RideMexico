@@ -1,4 +1,4 @@
-<ion-view view-title="Public Transport Database">
+<ion-view view-title="Transport Database">
   <ion-content>
     <div class="list card" ng-controller="DatabaseMenuCtrl">
       <a class="item item-icon-left item-icon-right" ng-click="busToggle()" ng-class="{'positive': bus}">
@@ -42,7 +42,7 @@
                                    'ion-chevron-up': carrot}"></i>
       </a>
       <div class="button-bar" ng-if="carrot">
-        <a class="button" href="#/app/database/carrotMap"><i class="ion-android-map padding-right"></i>Carrot Stands Map</a>
+        <a class="button" ng-click="clkCarrot()"><i class="ion-android-map padding-right"></i>Carrot Stands Map</a>
       </div>
     </div>
   </ion-content>

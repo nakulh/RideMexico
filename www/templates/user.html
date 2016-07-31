@@ -48,22 +48,29 @@
       </div>
     </div>
     <div ng-if="user">
-      <h2 class="bg-user username">Username</h2>
+      <h2 class="bg-user username">{{username}}</h2>
       <div class="list card userShadow">
-        <a class="item item-icon-left item-icon-right item-borderless" style="color: #ff66ff;">
+        <a class="item item-icon-left item-borderless" style="color: #ff66ff;">
           <i class="icon ion-heart"></i>
-            <h2 style="color: #ff66ff; font-size: 25px; padding-left: 30px;"><ion-spinner ng-if="gettingLikes" icon="android"></ion-spinner>{{totalLikes}}</h2>
-          <i class="icon ion-chevron-right"></i>
+            <h2 style="color: #ff66ff; font-size: 20px;"><ion-spinner ng-if="gettingLikes" icon="android"></ion-spinner>{{totalLikes}}</h2>
         </a>
-        <a class="item item-icon-right balanced">
-            <h2 class="balanced" style="font-size: 25px; padding-left: 30px;">Cards: {{totalPosts}}<ion-spinner ng-if="gettingPosts" icon="android"></ion-spinner></h2>
-          <i class="icon ion-chevron-right"></i>
+        <a class="item dark">
+            <h2 class="dark" style="font-size: 20px">Unmaintained reports: {{totalUnmaintained}}<ion-spinner ng-if="gettingUnmaintained" icon="android"></ion-spinner></h2>
+        </a>
+        <a class="item royal">
+            <h2 class="royal" style="font-size: 20px;">Conjusted reports: {{totalConjusted}}<ion-spinner ng-if="gettingConjusted" icon="android"></ion-spinner></h2>
+        </a>
+        <a class="item energized">
+            <h2 class="energized" style="font-size: 20px;">Late reports: {{totalLate}}<ion-spinner ng-if="gettingLate" icon="android"></ion-spinner></h2>
+        </a>
+        <a class="item balanced">
+            <h2 class="balanced" style="font-size: 20px;">Cards posted: {{totalPosts}}<ion-spinner ng-if="gettingPosts" icon="android"></ion-spinner></h2>
         </a>
       </div>
       <div class="list card userShadow">
         <a class="item item-icon-left assertive" ng-click="toggleEmailReset()">
           <i class="icon ion-android-alert"></i>
-            <h2 class="assertive" style="font-size: 25px; padding-left: 30px;">Reset E-mail</h2>
+            <h2 class="assertive" style="font-size: 20px; padding-left: 30px;">Reset E-mail</h2>
         </a>
         <div class-"list" ng-if="emailReset">
           <div class="item item-input-inset">
@@ -77,7 +84,7 @@
         </div>
         <a class="item item-icon-left assertive" ng-click="togglePasswordReset()">
           <i class="icon ion-android-alert"></i>
-            <h2 class="assertive" style="font-size: 25px; padding-left: 30px;">Reset Password</h2>
+            <h2 class="assertive" style="font-size: 20px; padding-left: 30px;">Reset Password</h2>
             <div ng-if="passwordReset">
               <div class="button-bar bus-button-bar">
                   <button class="button button-assertive" ng-click="resetPassword()">

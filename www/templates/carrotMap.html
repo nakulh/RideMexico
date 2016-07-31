@@ -2,8 +2,10 @@
   <ion-nav-title>Carrot Map</ion-nav-title>
   <ion-content>
     <ion-list>
-      <ion-item style="height: 90vh important;">
-        <ng-map zoom="14" center={{center}}>
+      <ion-item style="height: 90vh important; background-color: #387ef5">
+        <ng-map zoom="14" center={{center}} style="-webkit-box-shadow: -1px -1px 26px -4px rgba(0,0,0,1);
+-moz-box-shadow: -1px -1px 26px -4px rgba(0,0,0,1);
+box-shadow: -1px -1px 26px -4px rgba(0,0,0,1);">
           <marker ng-repeat="stand in stands track by $index" position={{stand.coordinates}} icon="img/carrot.png"></marker>
         </ng-map>
       </ion-item>

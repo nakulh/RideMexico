@@ -47,6 +47,21 @@ app.controller('UserCtrl', function($scope, $ionicPopup, $cordovaToast, infoServ
         $scope.totalPosts = infoService.totalPosts;
         $scope.gettingPosts = false;
       });
+      $scope.gettingUnmaintained = true;
+      infoService.getUnmaintainedNumber(uid).then(function(data){
+        $scope.totalUnmaintained= infoService.totalUnmaintained;
+        $scope.gettingUnmaintained = false;
+      });
+      $scope.gettingConjusted = true;
+      infoService.getConjustedNumber(uid).then(function(data){
+        $scope.totalConjusted = infoService.totalConjusted;
+        $scope.gettingConjusted = false;
+      });
+      $scope.gettingLate = true;
+      infoService.getLateNumber(uid).then(function(data){
+        $scope.totalLate = infoService.totalLate;
+        $scope.gettingLate = false;
+      });
     }
     else {
       $scope.vid = false;

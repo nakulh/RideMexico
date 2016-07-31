@@ -199,19 +199,16 @@ app.controller('MetroRouteController', function($scope, MetroTrainRouteService, 
       $scope.stopsMap.push(stopMap);
     }
     $ionicLoading.hide();
+
     //This Part Handles the add card function
-    var notLoggedIn = function(){
-      var alertPopup = $ionicPopup.alert({
-        title: 'Ouchie !',
-        template: 'You must be logged in to use this function'
-      });
-    };
   }, function(err){
     console.log(err);
   });
   $scope.loadingCards = true;
   var cardKeys = [];
   $scope.cards = [];
+
+  //Retrive tags
   firebase.database().ref('/metro/'+ $stateParams.routeId + '/tags/').once('value').then(function(value) {
     console.log(value.val());
     $scope.tags = {};
@@ -276,12 +273,10 @@ app.controller('MetroRouteController', function($scope, MetroTrainRouteService, 
       console.log(currKey);
       firebase.database().ref('/cards/images/'+ currKey).once('value').then(function(imgData){
         $scope.cards[x].imageData = "data:image/jpeg;base64," + imgData.val();
-        console.log(imgData.val());
       });
     }
   };
   firebase.database().ref('/cards/metro/'+ $stateParams.routeId + "/").once('value').then(function(cards) {
-    console.log(cards.val());
     for (var key in cards.val()) {
       if (cards.val().hasOwnProperty(key)) {
         $scope.cards.push(cards.val()[key]);
@@ -307,6 +302,7 @@ app.controller('MetroRouteController', function($scope, MetroTrainRouteService, 
         $scope.$apply();
       }
     }
+    $scope.cards = $scope.cards.reverse();
     for(var y = 0; y < $scope.cards.length; y++){
       getImage(y);
     }
@@ -324,7 +320,7 @@ app.controller('MetroRouteController', function($scope, MetroTrainRouteService, 
         firebase.database().ref().update(update).then(function(done){
           update = {};
           var l = ++$scope.cards[indx].likes;
-          console.log($scope.cards[indx]);
+          //console.log($scope.cards[indx]);
           update['/cards/metro/' + $stateParams.routeId + '/' + currKey + '/likes'] = l;
           firebase.database().ref().update(update).then(function(done){
             console.log("liked");
@@ -339,7 +335,10 @@ app.controller('MetroRouteController', function($scope, MetroTrainRouteService, 
         var path = "/app/addcard/" + $stateParams.routeId + "/x/" + "metro";
         $location.path(path);
       } else {
-        notLoggedIn();
+        $ionicPopup.alert({
+          title: 'Ouchie !',
+          template: 'You must be logged in to use this function'
+        });
       }
   };
   $timeout(function(){$scope.loadingCards = false;}, 15000);
@@ -361,7 +360,7 @@ app.controller('StopMapController', function($scope, $stateParams, $ionicPopup){
  };
 });
 
-app.controller('TrainRouteController', function($scope, MetroTrainRouteService, $stateParams, $location, $timeout, $ionicLoading){
+app.controller('TrainRouteController', function($scope, MetroTrainRouteService, $stateParams, $location, $timeout){
   $ionicLoading.show({
       template: 'Loading...'
   });
@@ -413,11 +412,11 @@ app.controller('TrainRouteController', function($scope, MetroTrainRouteService, 
 
     //Retrive Card Data from Server
     firebase.database().ref('/cards/train/'+ $stateParams.routeId + "/").once('value').then(function(cards) {
-      console.log(cards.val());
+      //console.log(cards.val());
         for (var key in cards.val()) {
           if (cards.val().hasOwnProperty(key)) {
-            console.log(key); // 'a'
-            console.log(cards.val()[key]); // 'hello'
+            //console.log(key); // 'a'
+            //console.log(cards.val()[key]); // 'hello'
           }
         }
     });
@@ -435,34 +434,17 @@ app.controller('TrainRouteController', function($scope, MetroTrainRouteService, 
       $scope.stopsMap.push(stopMap);
     }
     //Handles new card
-    var notLoggedIn = function(){
-      var alertPopup = $ionicPopup.alert({
-        title: 'Ouchie !',
-        template: 'You must be logged in to use this function'
-      });
-    };
     $ionicLoading.hide();
     $scope.addCard = function($event) {
        if (firebase.auth().currentUser) {
           var path = "/app/addcard/" + $stateParams.routeId + "/x/" + "train";
           $location.path(path);
         } else {
-          notLoggedIn();
+          $ionicPopup.alert({
+            title: 'Ouchie !',
+            template: 'You must be logged in to use this function'
+          });
         }
-    };
-    $scope.tags = function(tag){
-      firebase.database().ref('/train/' + $stateParams.routeId + '/tags/' + tag).once('value').then(function(value) {
-        var updates = {};
-        var newValue = 1;
-        console.log(value.val());
-        if(value.val() !== null){
-          newValue = value.val() + 1;
-        }
-        updates['/train/' + $stateParams.routeId + '/tags/' + tag] = newValue;
-        firebase.database().ref().update(updates).then(function(done){
-          console.log(newValue);
-        });
-      });
     };
   }, function(err){
     console.log(err);
@@ -532,6 +514,7 @@ app.controller('TrainRouteController', function($scope, MetroTrainRouteService, 
       });
     }
   };
+  $scope.loadingCards = true;
   firebase.database().ref('/cards/train/'+ $stateParams.routeId + "/").once('value').then(function(cards) {
     console.log(cards.val());
     for (var key in cards.val()) {
@@ -558,6 +541,8 @@ app.controller('TrainRouteController', function($scope, MetroTrainRouteService, 
         }
       }
     }
+    $scope.cards = $scope.cards.reverse();
+    $scope.loadingCards = false;
     for(var y = 0; y < $scope.cards.length; y++){
       getImage(y);
     }
@@ -606,10 +591,12 @@ app.controller('BusTripController', function($scope, $stateParams, BusTripServic
   });
 });
 
-app.controller('BusTripRouteController', function($scope, $stateParams, BusTripRouteService, $http, BusTripCalenderService, $location, $timeout, $ionicLoading){
+app.controller('BusTripRouteController', function($scope, $stateParams, BusTripRouteService, $http, BusTripCalenderService, $location, $timeout, $ionicLoading, $ionicPopup){
   var cardKeys = [];
   $scope.cards = [];
-  firebase.database().ref('/bus/'+ $stateParams.routeId + '/' + $stateParams.routeId + '/tags/').once('value').then(function(value) {
+
+  //Retrive tags
+  firebase.database().ref('/bus/'+ $stateParams.routeId + '/' + $stateParams.tripId + '/tags/').once('value').then(function(value) {
     $scope.tags = {};
     if(value.val() === null){
       $scope.tags.conjusted = 0;
@@ -638,7 +625,7 @@ app.controller('BusTripRouteController', function($scope, $stateParams, BusTripR
   $scope.tagsEdit = function(tag){
     console.log(tag);
     var user = firebase.auth().currentUser;
-    firebase.database().ref('/users/' + user.uid + '/metro/' + tag + '/' + $stateParams.routeId).once('value').then(function(tagInfo){
+    firebase.database().ref('/users/' + user.uid + '/bus/' + tag + '/' + $stateParams.routeId + '/' + $stateParams.tripId).once('value').then(function(tagInfo){
       if(!tagInfo.val()){
         firebase.database().ref('/bus/'+ $stateParams.routeId + '/' + $stateParams.tripId + '/tags/' + tag).once('value').then(function(value) {
           var updates = {};
@@ -672,7 +659,8 @@ app.controller('BusTripRouteController', function($scope, $stateParams, BusTripR
       });
     }
   };
-  firebase.database().ref('/cards/metro/'+ $stateParams.routeId + "/").once('value').then(function(cards) {
+  $scope.loadingCards = true;
+  firebase.database().ref('/cards/bus/'+ $stateParams.routeId + '/' + $stateParams.tripId + '/').once('value').then(function(cards) {
     console.log(cards.val());
     for (var key in cards.val()) {
       if (cards.val().hasOwnProperty(key)) {
@@ -698,6 +686,8 @@ app.controller('BusTripRouteController', function($scope, $stateParams, BusTripR
         }
       }
     }
+    $scope.cards = $scope.cards.reverse();
+    $scope.loadingCards = false;
     for(var y = 0; y < $scope.cards.length; y++){
       getImage(y);
     }
@@ -715,7 +705,7 @@ app.controller('BusTripRouteController', function($scope, $stateParams, BusTripR
           update = {};
           var l = ++$scope.cards[indx].likes;
           console.log($scope.cards[indx]);
-          update['/cards/metro/' + $stateParams.routeId + '/' + currKey + '/likes'] = l;
+          update['/cards/metro/' + $stateParams.routeId + '/' + $stateParams.tripId + '/' + currKey + '/likes'] = l;
           firebase.database().ref().update(update).then(function(done){
             console.log("liked");
             $scope.$apply();
@@ -817,34 +807,16 @@ app.controller('BusTripRouteController', function($scope, $stateParams, BusTripR
   //console.log(multipleTrips);
 
   //Handles new card
-  var notLoggedIn = function(){
-    var alertPopup = $ionicPopup.alert({
-      title: 'Ouchie !',
-      template: 'You must be logged in to use this function'
-    });
-  };
-
   $scope.addCard = function($event) {
      if (firebase.auth().currentUser) {
         var path = "/app/addcard/" + $stateParams.routeId + "/" + $stateParams.tripId + "/" + "bus";
         $location.path(path);
       } else {
-        notLoggedIn();
+        $ionicPopup.alert({
+          title: 'Ouchie !',
+          template: 'You must be logged in to use this function'
+        });
       }
-  };
-  $scope.tags = function(tag){
-    firebase.database().ref('/bus/' + $stateParams.routeId + '/' + $stateParams.tripId + '/tags/' + tag).once('value').then(function(value) {
-      var updates = {};
-      var newValue = 1;
-      console.log(value.val());
-      if(value.val() !== null){
-        newValue = value.val() + 1;
-      }
-      updates['/bus/' + $stateParams.routeId + '/' + $stateParams.tripId + '/tags/' + tag] = newValue;
-      firebase.database().ref().update(updates).then(function(done){
-        console.log(newValue);
-      });
-    });
   };
   $timeout(function(){$scope.loadingCards = false;}, 15000);
    $ionicLoading.hide();
@@ -852,7 +824,7 @@ app.controller('BusTripRouteController', function($scope, $stateParams, BusTripR
       console.log(err);
   });
 });
-app.controller('carrotMapCtrl', function($scope, $cordovaGeolocation, $cordovaToast){
+app.controller('carrotMapCtrl', function($scope, $cordovaGeolocation){
   $scope.center = "[19.350493, -99.163007]";
   $scope.carrot = [
     {
@@ -960,7 +932,7 @@ app.controller('carrotMapCtrl', function($scope, $cordovaGeolocation, $cordovaTo
         var dest = [station.lat, station.lon];
         launchnavigator.navigate(dest, source);
       }, function(err) {
-        $cordovaToast.showLongBottom('Problem with GPS');
+        $cordovaToast.showLongBottom('Problem With Gps');
         console.log("location fail");
       });
   };

@@ -1,13 +1,6 @@
 var app = angular.module('Database.controllers', ['routes.services']);
 
-app.controller('DatabaseMenuCtrl', function($scope, RoutesService, $cordovaToast){
-  $scope.clk = function(){
-    $cordovaToast.showLongBottom('Here is a message').then(function(success) {
-    // success
-    }, function (error) {
-      // error
-    });
-  };
+app.controller('DatabaseMenuCtrl', function($scope, RoutesService, $cordovaToast, $cordovaNetwork, $location){
   $scope.bus = false;
   $scope.train = false;
   $scope.metro = false;
@@ -23,16 +16,17 @@ app.controller('DatabaseMenuCtrl', function($scope, RoutesService, $cordovaToast
   $scope.metroToggle = function(){
     $scope.metro = !$scope.metro;
   };
-  $scope.ecobikeToggle = function(){
-    $scope.ecobike = !$scope.ecobike;
-  };
   $scope.carrotToggle = function(){
     $scope.carrot = !$scope.carrot;
   };
-  $scope.unknownToggle = function(){
-    $scope.unknown = !$scope.unknown;
+  $scope.clkCarrot = function(){
+    if($cordovaNetwork.isOnline()){
+      $location.path("/app/database/carrotMap");
+    }
+    else{
+      $cordovaToast.showLongBottom('Need internet for this feature');
+    }
   };
-
 });
 
 app.controller('BusRoutesListController', function($scope, RoutesService){
@@ -360,7 +354,7 @@ app.controller('StopMapController', function($scope, $stateParams, $ionicPopup){
  };
 });
 
-app.controller('TrainRouteController', function($scope, MetroTrainRouteService, $stateParams, $location, $timeout){
+app.controller('TrainRouteController', function($scope, MetroTrainRouteService, $stateParams, $location, $timeout, $ionicLoading){
   $ionicLoading.show({
       template: 'Loading...'
   });
@@ -798,12 +792,12 @@ app.controller('BusTripRouteController', function($scope, $stateParams, BusTripR
     $scope.stopsMap.push(stopMap);
     }
 
-  for(x = 0; x < BusTripRouteService.trips.length; x++)
+  /*for(x = 0; x < BusTripRouteService.trips.length; x++)
       console.log(BusTripRouteService.trips[x]);
   for(x = 0; x < diffServiceId.length; x++)
     console.log(diffServiceId[x]);
   for(x = 0; x < $scope.oneFrequency.length; x++)
-    console.log($scope.oneFrequency[x]);
+    console.log($scope.oneFrequency[x]);*/
   //console.log(multipleTrips);
 
   //Handles new card
@@ -920,7 +914,6 @@ app.controller('carrotMapCtrl', function($scope, $cordovaGeolocation){
     $scope.stands.push(stand);
   }
   $scope.centerChange = function(stand){
-    console.log(stand);
     $scope.center = '[' + stand.coordinates + ']';
   };
   $scope.getDirections = function(station){
@@ -933,7 +926,6 @@ app.controller('carrotMapCtrl', function($scope, $cordovaGeolocation){
         launchnavigator.navigate(dest, source);
       }, function(err) {
         $cordovaToast.showLongBottom('Problem With Gps');
-        console.log("location fail");
       });
   };
 });

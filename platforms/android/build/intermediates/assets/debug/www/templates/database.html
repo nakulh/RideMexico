@@ -1,9 +1,8 @@
 <ion-view view-title="Public Transport Database">
   <ion-content>
     <div class="list card" ng-controller="DatabaseMenuCtrl">
-
       <a class="item item-icon-left item-icon-right" ng-click="busToggle()" ng-class="{'positive': bus}">
-        <i class="icon ion-android-bus"></i>
+        <i class="icon ion-android-bus" class="menuIcon"></i>
         Bus
         <i class="icon" ng-class="{'ion-chevron-down': !bus,
                                    'ion-chevron-up': bus}"></i>

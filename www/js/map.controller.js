@@ -1,7 +1,9 @@
 var app = angular.module('Map.controllers', ['Map.services']);
 app.controller('MapController', function($scope, MapService, NgMap, $cordovaToast, $http, $ionicPopup, $rootScope){
+  $scope.img = "dyMap.png";
+  $scope.center="[19.2465, -99.1013]";
   NgMap.getMap().then(function(map) {
-    $scope.dist = 100;
+    $scope.dist = 200;
     $scope.Dist = $scope.dist;
     $scope.shapes = [];
     $scope.markers = [];
@@ -11,7 +13,6 @@ app.controller('MapController', function($scope, MapService, NgMap, $cordovaToas
     $scope.address = "";
     $scope.markerAnimation = false;
     $scope.gotNewAddress = false;
-    $scope.img = "dyMap.png";
     $scope.bus = true;
     $scope.train = true;
     $scope.metro = true;
@@ -22,7 +23,6 @@ app.controller('MapController', function($scope, MapService, NgMap, $cordovaToas
       "1": "metro",
       "2": "train",
       "3": "bus",
-      "800": "bus"
     };
     var shuffleColours = function shuffleArray(array) {
         for (var i = array.length - 1; i > 0; i--) {
@@ -69,6 +69,12 @@ app.controller('MapController', function($scope, MapService, NgMap, $cordovaToas
       console.log(this.data);
     };
     $scope.selectLocation = function(){
+      $cordovaGeolocation
+        .getCurrentPosition(posOptions)
+        .then(function (position) {
+          $scope.center  = "[" + position.coords.latitude + ", " + position.coords.longitude + "]";
+          $scope.yourLocation = true;
+        });
       $scope.img = "dyMapBusy.png";
       $scope.markerAnimation = true;
       latLon = map.getCenter().toUrlValue();
@@ -77,11 +83,7 @@ app.controller('MapController', function($scope, MapService, NgMap, $cordovaToas
       //Get the address of the selected place
       $http.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&key=AIzaSyDtZm_v8XKJd4VOqMdonzpM02t0zweJS3E")
         .success(function(geoData){
-          if(geoData.results[1].formatted_address.length > 34)
-            $scope.address = geoData.results[1].formatted_address.slice(0, 34) + "..";
-          else {
-            $scope.address = geoData.results[1].formatted_address;
-          }
+          $scope.address = geoData.results[1].formatted_address;
           $scope.gotNewAddress = true;
         })
         .error(function(err){
@@ -90,11 +92,7 @@ app.controller('MapController', function($scope, MapService, NgMap, $cordovaToas
       //Get the full routes info
       MapService.getRoutes(lat, lon, $scope.dist, $scope.bus, $scope.train, $scope.metro).then(function(data){
         if(!data){
-          $cordovaToast.showLongBottom('No routes nearby').then(function(success) {
-          // success
-          }, function (error) {
-            // error
-          });
+          $cordovaToast.showLongBottom('No routes nearby');
           $scope.markerAnimation = false;
         }
         else{
@@ -128,6 +126,8 @@ app.controller('MapController', function($scope, MapService, NgMap, $cordovaToas
               $scope.markersData.push({
                 trip: MapService.trips[x],
                 stop: MapService.stops[x][y],
+                route: MapService.routes[x],
+                type: tripTypeDir.MapService.routes[x].route_type.trim()
               });
             }
           for(x = 0; x < MapService.tripType.length; x++){
@@ -172,11 +172,27 @@ app.controller('MapController', function($scope, MapService, NgMap, $cordovaToas
     console.log(this.data);
     var i = $scope.markersData.indexOf(this.data);
     $scope.currData = this.data;
+    if(this.data.type == "train" || this.data.type == "metro")
+      $scope.link = "#/app/database/" + this.data.type + "Route/" + this.data.route.route_id;
+    else
+      $scope.link = "#/app/database/" + this.data.type + "Route/" + this.data.route.route_id + "/" + this.data.trip.trip_id;
     $scope.imgUrl = "https://maps.googleapis.com/maps/api/streetview?size=230x100&location="+$scope.currData.stop.stop_lat+","+$scope.currData.stop.stop_lon+"&heading=151.78&pitch=-0.76&key=AIzaSyDtZm_v8XKJd4VOqMdonzpM02t0zweJS3E";
     var alertPopup = $ionicPopup.alert({
      scope: $scope,
      title: 'Selected Stop',
-     template: '<ion-list><ion-item>Stop: {{currData.stop.stop_name}}</ion-item><ion-item>{{currData.trip.trip_desc}}</ion-item></ion-list><img class="padding-top" ng-src={{imgUrl}} alt="Description" />'
+     template: '<ion-list><ion-item>Stop: {{currData.stop.stop_name}}</ion-item><ion-item>{{currData.trip.trip_desc}}</ion-item></ion-list><img class="padding-top" ng-src={{imgUrl}} alt="Description" /><button ng-click="openMap(currData.stop)" class="button button-small">Get directions</button><button href={{link}} class="button button-small">Full route info</button>'
     });
+ };
+ var openMap = function(stop){
+   var posOptions = {timeout: 10000, enableHighAccuracy: false};
+   $cordovaGeolocation
+     .getCurrentPosition(posOptions)
+     .then(function (position) {
+       var source  = [position.coords.latitude, position.coords.longitude];
+       var dest = [stop.stop_lat, stop.stop_lon];
+       launchnavigator.navigate(dest, source);
+     }, function(err) {
+       $cordovaToast.showLongBottom('Problem with your Gps');
+     });
  };
 });
