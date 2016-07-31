@@ -5,8 +5,7 @@
       <input type="search" placeholder="Search" ng-model="search.route_long_name">
     </label>
   </div>
-  <ion-content>
-    <h1 style="font-size: 27px;">Search</h1>
+  <ion-content class="has-subheader">
     <ion-list>
       <ion-item href="#/app/database/{{routeType}}/{{route.route_id}}" ng-repeat="route in busRoutes | filter: search">
         <h2>{{route.route_long_name}}</h2>

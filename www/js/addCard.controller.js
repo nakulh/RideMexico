@@ -69,23 +69,6 @@ app.controller('AddCardCtrl', function($scope, $cordovaCamera, $stateParams, $io
     firebase.database().ref().update(updates).then(function(done){
       $scope.sending = false;
       postedAlert();
-      if(tweet){
-        $cordovaSocialSharing
-          .shareViaTwitter(cardData.description, cardData.image)
-          .then(function(result) {
-            $cordovaToast.showLongBottom('Shared via Twitter').then(function(success) {
-            // success
-            }, function (error) {
-              // error
-            });
-          }, function(err) {
-            $cordovaToast.showLongBottom('Some error occured with Twitter').then(function(success) {
-            // success
-            }, function (error) {
-              // error
-            });
-          });
-      }
     });
   };
   $scope.post = function(title, description, addLocation, tweet){

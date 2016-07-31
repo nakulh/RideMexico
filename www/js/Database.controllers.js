@@ -1,12 +1,10 @@
 var app = angular.module('Database.controllers', ['routes.services']);
 
-app.controller('DatabaseMenuCtrl', function($scope, RoutesService, $cordovaToast, $cordovaNetwork, $location){
+app.controller('DatabaseMenuCtrl', function($scope, RoutesService, $cordovaToast){
   $scope.bus = false;
   $scope.train = false;
   $scope.metro = false;
-  $scope.ecobike = false;
   $scope.carrot = false;
-  $scope.unknown = false;
   $scope.busToggle = function(){
     $scope.bus = !$scope.bus;
   };
@@ -18,14 +16,6 @@ app.controller('DatabaseMenuCtrl', function($scope, RoutesService, $cordovaToast
   };
   $scope.carrotToggle = function(){
     $scope.carrot = !$scope.carrot;
-  };
-  $scope.clkCarrot = function(){
-    if($cordovaNetwork.isOnline()){
-      $location.path("/app/database/carrotMap");
-    }
-    else{
-      $cordovaToast.showLongBottom('Need internet for this feature');
-    }
   };
 });
 
@@ -110,14 +100,7 @@ app.controller('MetroRoutesListController', function($scope, RoutesService){
   });
 });
 
-app.controller('MetroRouteController', function($scope, MetroTrainRouteService, $stateParams, $ionicPopup, $location, $ionicPopover, $ionicLoading, $timeout){
-  /*$scope.online = false;
-  if($cordovaNetwork.isOnline()){
-    $scope.online = true;
-  }
-  else{
-    $scope.online = false;
-  }*/
+app.controller('MetroRouteController', function($scope, MetroTrainRouteService, $stateParams, $ionicPopup, $location, $ionicPopover, $ionicLoading, $timeout, $cordovaGeolocation, $cordovaToast){
   $ionicLoading.show({
       template: 'Loading...'
   });
@@ -188,9 +171,11 @@ app.controller('MetroRouteController', function($scope, MetroTrainRouteService, 
     $scope.shapeCenter = "[" + MetroTrainRouteService.shapes[0].shape_pt_lat +  "," + MetroTrainRouteService.shapes[0].shape_pt_lon + "]";
     $scope.stopsMap = [];
     var stopMap = "";
+    $scope.markersData = [];
     for(x = 0; x < $scope.stops.length; x++){
       stopMap = $scope.stops[x].stop_lat + "," + $scope.stops[x].stop_lon;
       $scope.stopsMap.push(stopMap);
+      $scope.markersData.push($scope.stops[x]);
     }
     $ionicLoading.hide();
 
@@ -336,6 +321,42 @@ app.controller('MetroRouteController', function($scope, MetroTrainRouteService, 
       }
   };
   $timeout(function(){$scope.loadingCards = false;}, 15000);
+
+  $scope.showPopup = function() {
+    $scope.openMap = function(stop){
+      var posOptions = {timeout: 10000, enableHighAccuracy: false};
+      $cordovaGeolocation
+        .getCurrentPosition(posOptions)
+        .then(function (position) {
+          var source  = [position.coords.latitude, position.coords.longitude];
+          var dest = [stop.stop_lat, stop.stop_lon];
+          launchnavigator.navigate(dest, source);
+        }, function(err) {
+          $cordovaToast.showLongBottom('Problem with your Gps');
+        });
+    };
+    $scope.currData = this.data;
+    $scope.imgUrl = "https://maps.googleapis.com/maps/api/streetview?size=230x100&location="+$scope.currData.stop_lat+","+$scope.currData.stop_lon+"&heading=151.78&pitch=-0.76&key=AIzaSyDtZm_v8XKJd4VOqMdonzpM02t0zweJS3E";
+    var alertPopup = $ionicPopup.alert({
+     scope: $scope,
+     title: 'Selected Stop',
+     template: '<ion-list><ion-item>Stop: {{currData.stop_name}}</ion-item></ion-list><img class="padding-top" ng-src={{imgUrl}} alt="Description"/><button ng-click="openMap(currData)" class="button button-small button-clear button-positive">Get directions</button>'
+    });
+  };
+  $scope.openLocation = function(location){
+    console.log(location);
+    console.log("open location");
+    var posOptions = {timeout: 10000, enableHighAccuracy: false};
+    $cordovaGeolocation
+      .getCurrentPosition(posOptions)
+      .then(function (position) {
+        var source  = [position.coords.latitude, position.coords.longitude];
+        var dest = [location.lat, location.lon];
+        launchnavigator.navigate(dest, source);
+      }, function(err) {
+        $cordovaToast.showLongBottom('Problem with your Gps');
+      });
+  };
 });
 
 app.controller('StopMapController', function($scope, $stateParams, $ionicPopup){
@@ -354,7 +375,7 @@ app.controller('StopMapController', function($scope, $stateParams, $ionicPopup){
  };
 });
 
-app.controller('TrainRouteController', function($scope, MetroTrainRouteService, $stateParams, $location, $timeout, $ionicLoading){
+app.controller('TrainRouteController', function($scope, MetroTrainRouteService, $stateParams, $location, $timeout, $ionicLoading, $cordovaGeolocation, $ionicPopup, $cordovaToast){
   $ionicLoading.show({
       template: 'Loading...'
   });
@@ -365,10 +386,12 @@ app.controller('TrainRouteController', function($scope, MetroTrainRouteService, 
     $scope.frequenciesSeg1 = [];
     $scope.stops = MetroTrainRouteService.stops;
     $scope.routeTime = MetroTrainRouteService.routeTime;
-
     for(x = 0; x < MetroTrainRouteService.trips.length; x++)
       if(MetroTrainRouteService.trips[x].trip_desc.trim() == MetroTrainRouteService.route.route_long_name.trim())
         routesSeg1.push(MetroTrainRouteService.trips[x]);
+    for(x=0; x < MetroTrainRouteService.route.length; x++){
+      console.log(MetroTrainRouteService.route[x]);
+    }
     if(routesSeg1[0].trip_desc.trim() == "Xochimilco - Tasqueña" || routesSeg1[0].trip_desc.trim() == "Tasqueña - Xochimilco"){
       $scope.cont = true;
       for(x = 0; x < routesSeg1.length; x++)
@@ -423,9 +446,11 @@ app.controller('TrainRouteController', function($scope, MetroTrainRouteService, 
 
     $scope.stopsMap = [];
     var stopMap = "";
+    $scope.markersData = [];
     for(x = 0; x < $scope.stops.length; x++){
       stopMap = $scope.stops[x].stop_lat + "," + $scope.stops[x].stop_lon;
       $scope.stopsMap.push(stopMap);
+      $scope.markersData.push($scope.stops[x]);
     }
     //Handles new card
     $ionicLoading.hide();
@@ -564,6 +589,42 @@ app.controller('TrainRouteController', function($scope, MetroTrainRouteService, 
     });
   };
   $timeout(function(){$scope.loadingCards = false;}, 15000);
+
+  $scope.showPopup = function() {
+    $scope.openMap = function(stop){
+      var posOptions = {timeout: 10000, enableHighAccuracy: false};
+      $cordovaGeolocation
+        .getCurrentPosition(posOptions)
+        .then(function (position) {
+          var source  = [position.coords.latitude, position.coords.longitude];
+          var dest = [stop.stop_lat, stop.stop_lon];
+          launchnavigator.navigate(dest, source);
+        }, function(err) {
+          $cordovaToast.showLongBottom('Problem with your Gps');
+        });
+    };
+    $scope.currData = this.data;
+    $scope.imgUrl = "https://maps.googleapis.com/maps/api/streetview?size=230x100&location="+$scope.currData.stop_lat+","+$scope.currData.stop_lon+"&heading=151.78&pitch=-0.76&key=AIzaSyDtZm_v8XKJd4VOqMdonzpM02t0zweJS3E";
+    var alertPopup = $ionicPopup.alert({
+     scope: $scope,
+     title: 'Selected Stop',
+     template: '<ion-list><ion-item>Stop: {{currData.stop_name}}</ion-item></ion-list><img class="padding-top" ng-src={{imgUrl}} alt="Description"/><button ng-click="openMap(currData)" class="button button-small button-clear button-positive">Get directions</button>'
+    });
+  };
+  $scope.openLocation = function(location){
+    console.log(location);
+    console.log("open location");
+    var posOptions = {timeout: 10000, enableHighAccuracy: false};
+    $cordovaGeolocation
+      .getCurrentPosition(posOptions)
+      .then(function (position) {
+        var source  = [position.coords.latitude, position.coords.longitude];
+        var dest = [location.lat, location.lon];
+        launchnavigator.navigate(dest, source);
+      }, function(err) {
+        $cordovaToast.showLongBottom('Problem with your Gps');
+      });
+  };
 });
 
 app.controller('BusTripController', function($scope, $stateParams, BusTripService){
@@ -585,7 +646,7 @@ app.controller('BusTripController', function($scope, $stateParams, BusTripServic
   });
 });
 
-app.controller('BusTripRouteController', function($scope, $stateParams, BusTripRouteService, $http, BusTripCalenderService, $location, $timeout, $ionicLoading, $ionicPopup){
+app.controller('BusTripRouteController', function($scope, $stateParams, BusTripRouteService, $http, BusTripCalenderService, $location, $timeout, $ionicLoading, $ionicPopup, $cordovaGeolocation, $cordovaToast){
   var cardKeys = [];
   $scope.cards = [];
 
@@ -786,10 +847,12 @@ app.controller('BusTripRouteController', function($scope, $stateParams, BusTripR
     $scope.shapeCenter = "[" + BusTripRouteService.shapes[0].shape_pt_lat +  "," + BusTripRouteService.shapes[0].shape_pt_lon + "]";
 
     $scope.stopsMap = [];
+    $scope.markersData = [];
     var stopMap = "";
     for(x = 0; x < $scope.stops.length; x++){
       stopMap = $scope.stops[x].stop_lat + "," + $scope.stops[x].stop_lon;
-    $scope.stopsMap.push(stopMap);
+      $scope.stopsMap.push(stopMap);
+      $scope.markersData.push($scope.stops[x]);
     }
 
   /*for(x = 0; x < BusTripRouteService.trips.length; x++)
@@ -813,7 +876,42 @@ app.controller('BusTripRouteController', function($scope, $stateParams, BusTripR
       }
   };
   $timeout(function(){$scope.loadingCards = false;}, 15000);
-   $ionicLoading.hide();
+  $ionicLoading.hide();
+  $scope.showPopup = function() {
+    $scope.openMap = function(stop){
+      var posOptions = {timeout: 10000, enableHighAccuracy: false};
+      $cordovaGeolocation
+        .getCurrentPosition(posOptions)
+        .then(function (position) {
+          var source  = [position.coords.latitude, position.coords.longitude];
+          var dest = [stop.stop_lat, stop.stop_lon];
+          launchnavigator.navigate(dest, source);
+        }, function(err) {
+          $cordovaToast.showLongBottom('Problem with your Gps');
+        });
+    };
+    $scope.currData = this.data;
+    $scope.imgUrl = "https://maps.googleapis.com/maps/api/streetview?size=230x100&location="+$scope.currData.stop_lat+","+$scope.currData.stop_lon+"&heading=151.78&pitch=-0.76&key=AIzaSyDtZm_v8XKJd4VOqMdonzpM02t0zweJS3E";
+    var alertPopup = $ionicPopup.alert({
+     scope: $scope,
+     title: 'Selected Stop',
+     template: '<ion-list><ion-item>Stop: {{currData.stop_name}}</ion-item></ion-list><img class="padding-top" ng-src={{imgUrl}} alt="Description"/><button ng-click="openMap(currData)" class="button button-small button-clear button-positive">Get directions</button>'
+    });
+  };
+  $scope.openLocation = function(location){
+    console.log(location);
+    console.log("open location");
+    var posOptions = {timeout: 10000, enableHighAccuracy: false};
+    $cordovaGeolocation
+      .getCurrentPosition(posOptions)
+      .then(function (position) {
+        var source  = [position.coords.latitude, position.coords.longitude];
+        var dest = [location.lat, location.lon];
+        launchnavigator.navigate(dest, source);
+      }, function(err) {
+        $cordovaToast.showLongBottom('Problem with your Gps');
+      });
+  };
   }, function(err){
       console.log(err);
   });

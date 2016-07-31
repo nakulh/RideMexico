@@ -285,7 +285,7 @@
           stroke-opacity="1.0" stroke-weight="3"
           path={{shapes}}>
         </shape>
-        <marker position="{{stopMap}}" ng-repeat="stopMap in stopsMap" icon="img/trainMarker.png"></marker>
+        <marker on-click="showPopup()" data="{{markersData[$index]}}" position="{{stopMap}}" ng-repeat="stopMap in stopsMap" icon="img/trainMarker.png"></marker>
       </ng-map>
     </ion-tab>
 
@@ -295,7 +295,7 @@
         <div class="row action-buttons"  ng-if="tags">
           <div class="col">
             <button ng-click="tagsEdit('late')" class="button button-energized button-block button-outline">
-              <!--<img src="img/emotions/late.png" height="28px" width="28px" class="button-image">-->Late
+              Late
                 <span class="badge badge-energized">{{tags.late}}
                 </span>
             </button>
@@ -307,7 +307,6 @@
         <div class="row action-buttons"  ng-if="tags">
           <div class="col">
             <button ng-click="tagsEdit('conjusted')" class="button button-royal button-block button-outline">
-              <!--<img src="img/emotions/conjusted.png" height="28px" width="28px" class="button-image" style="margin-left:-23px;">-->
               <span style="margin-right:7px;">
               </span>
               Conjusted
@@ -318,7 +317,7 @@
           </div>
           <div class="col">
             <button ng-click="tagsEdit('unmaintained')" class="button button-dark button-block button-outline">
-              <!--<img src="img/emotions/unmaintained.png" height="28px" width="28px" class="button-image">-->Unmaintained
+              Unmaintained
               <span class="badge badge-dark">{{tags.unmaintained}}
               </span>
             </button>
@@ -335,14 +334,15 @@
             <p>{{card.date | date:'dd-MM-yyyy'}}</p>
           </div>
           <div class="item item-body">
+            <h2>{{card.title}}</h2>
             <img height="150px" width="180px" ng-if="card.imageData" class="full-image" src={{card.imageData}}>
             <p>
               {{card.description}}
             </p>
             <p>
               <a ng-click="likeCard($index)" class="subdued">{{card.likes}} Likes</a>
-              <!--<a ng-click="comments($event)" class="subdued">5 Replies</a>-->
               <img ng-repeat="emoImg in card.emoImg track by $index" src={{emoImg}} height="30" width="30">
+              <a ng-if="card.location.lat" class="subdued" ng-click="openLocation(card.location)">Open Location</a>
             </p>
           </div>
         </div>

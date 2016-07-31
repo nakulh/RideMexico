@@ -144,7 +144,7 @@
           stroke-opacity="1.0" stroke-weight="3"
           path={{shapes}}>
         </shape>
-        <marker position="{{stopMap}}" ng-repeat="stopMap in stopsMap" icon="img/trainMarker.png"></marker>
+        <marker on-click="showPopup()" data="{{markersData[$index]}}" position="{{stopMap}}" ng-repeat="stopMap in stopsMap" icon="img/trainMarker.png"></marker>
       </ng-map>
     </ion-tab>
     <ion-tab title="Community" icon-on="ion-android-people" icon-off="ion-android-people">
@@ -191,6 +191,7 @@
             <p>{{card.date | date:'dd-MM-yyyy'}}</p>
           </div>
           <div class="item item-body">
+            <h2>{{card.title}}</h2>
             <img height="150px" width="180px" ng-if="card.imageData" class="full-image" src={{card.imageData}}>
             <p>
               {{card.description}}
@@ -198,6 +199,7 @@
             <p>
               <a ng-click="likeCard($index)" class="subdued">{{card.likes}} Likes</a>
               <img ng-repeat="emoImg in card.emoImg track by $index" src={{emoImg}} height="30" width="30">
+              <a ng-if="card.location.lat" class="subdued" ng-click="openLocation(card.location)">Open Location</a>
             </p>
           </div>
         </div>
